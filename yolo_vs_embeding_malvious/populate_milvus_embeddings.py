@@ -33,7 +33,7 @@ class DOLGEmbeddingExtractor:
     """Production-grade DOLG embedding extractor with GPU optimization"""
     
     def __init__(self, model_path: str = "dolg_model.pth", device: str = "cuda", 
-                 batch_size: int = 32, use_amp: bool = True):
+                 batch_size: int = 32, use_amp: bool = True, embedding_dim: int = 128):
         """
         Initialize production-grade DOLG embedding extractor
         
@@ -57,6 +57,7 @@ class DOLGEmbeddingExtractor:
         
         self.batch_size = batch_size
         self.use_amp = use_amp and self.device.type == 'cuda'
+        self.embedding_dim = embedding_dim
         
         # Load model
         self.model = self._load_dolg_model(model_path)
@@ -112,7 +113,7 @@ class DOLGEmbeddingExtractor:
             def forward(self, x):
                 return self.backbone(x)
         
-        model = ProductionDOLGModel(embedding_dim=128)
+        model = ProductionDOLGModel(embedding_dim=self.embedding_dim)
         
         # Load pretrained weights if they exist
         if Path(model_path).exists():
@@ -228,11 +229,16 @@ class MilvusPopulator:
     """Production-grade Milvus database populator with auto-setup"""
     
     def __init__(self, db_path: str = "./milvus_retail.db", 
-                 collection_name: str = "retail_items"):
+                 collection_name: str = "retail_items",
+                 embedding_dim: int = 128,
+                 index_type: str = "FLAT",
+                 metric_type: str = "COSINE"):
         """Initialize production-grade Milvus populator with auto-setup"""
         self.db_path = db_path
         self.collection_name = collection_name
-        self.embedding_dim = 128
+        self.embedding_dim = embedding_dim
+        self.index_type = index_type.upper()
+        self.metric_type = metric_type.upper()
         
         # Auto-setup Milvus
         self._ensure_milvus_ready()
@@ -287,11 +293,27 @@ class MilvusPopulator:
         
         # Create index params for GPU-accelerated search
         index_params = self.client.prepare_index_params()
-        index_params.add_index(
-            field_name="embedding",
-            index_type="FLAT",  # Best accuracy, GPU-accelerated
-            metric_type="COSINE"
-        )
+        idx_type = self.index_type
+        if idx_type == "IVF_FLAT":
+            index_params.add_index(
+                field_name="embedding",
+                index_type="IVF_FLAT",
+                metric_type=self.metric_type,
+                params={"nlist": 1024}
+            )
+        elif idx_type == "HNSW":
+            index_params.add_index(
+                field_name="embedding",
+                index_type="HNSW",
+                metric_type=self.metric_type,
+                params={"M": 16, "efConstruction": 200}
+            )
+        else:
+            index_params.add_index(
+                field_name="embedding",
+                index_type=idx_type,
+                metric_type=self.metric_type
+            )
         
         # Create collection with production settings
         self.client.create_collection(
@@ -307,8 +329,8 @@ class MilvusPopulator:
         
         print(f"✅ Collection '{self.collection_name}' created successfully")
         print(f"   Embedding dimension: {self.embedding_dim}")
-        print(f"   Index type: FLAT (GPU-accelerated)")
-        print(f"   Metric type: COSINE")
+        print(f"   Index type: {self.index_type}")
+        print(f"   Metric type: {self.metric_type}")
         
     def insert_embeddings(self, embeddings: List[Dict], batch_size: int = 1000):
         """Insert embeddings with production-grade batch processing"""
@@ -564,7 +586,10 @@ def populate_milvus_from_dataset(dataset_yaml: str,
                                 batch_size: int = 32,
                                 cache_path: Optional[str] = None,
                                 use_cache: bool = True,
-                                device: str = "cuda:0"):
+                                device: str = "cuda:0",
+                                embedding_dim: int = 128,
+                                index_type: str = "FLAT",
+                                metric_type: str = "COSINE"):
     """
     Production-grade function to populate Milvus database with embeddings
     
@@ -578,6 +603,9 @@ def populate_milvus_from_dataset(dataset_yaml: str,
         cache_path: Path to save/load embedding cache
         use_cache: Whether to use cached embeddings
         device: Device to run on (enforce GPU for production)
+        embedding_dim: Dimensionality of DOLG embeddings
+        index_type: Milvus index type (FLAT, IVF_FLAT, HNSW, ...)
+        metric_type: Similarity metric (COSINE, IP, L2)
     """
     print("\n" + "🚀"*40)
     print("PRODUCTION-GRADE MILVUS POPULATION PIPELINE")
@@ -619,7 +647,8 @@ def populate_milvus_from_dataset(dataset_yaml: str,
             model_path=dolg_model_path,
             device=device,
             batch_size=batch_size,
-            use_amp=True  # Enable mixed precision for speed
+            use_amp=True,  # Enable mixed precision for speed
+            embedding_dim=embedding_dim
         )
         
         class_embeddings = extract_class_embeddings(
@@ -643,7 +672,10 @@ def populate_milvus_from_dataset(dataset_yaml: str,
     print(f"🗄️  Initializing Production Milvus Database...")
     populator = MilvusPopulator(
         db_path=milvus_db_path,
-        collection_name=collection_name
+        collection_name=collection_name,
+        embedding_dim=embedding_dim,
+        index_type=index_type,
+        metric_type=metric_type
     )
     
     # Create collection with GPU-optimized index
@@ -717,6 +749,12 @@ def main():
                        help="Don't use cached embeddings")
     parser.add_argument("--device", type=str, default="cuda:0",
                        help="Device to run on (cuda:0, cuda:1, cpu) - GPU strongly recommended")
+    parser.add_argument("--embedding-dim", type=int, default=128,
+                       help="Dimensionality of the DOLG embedding head (default: 128)")
+    parser.add_argument("--index-type", type=str, default="FLAT",
+                       help="Milvus index type (FLAT, IVF_FLAT, HNSW, ...)")
+    parser.add_argument("--metric-type", type=str, default="COSINE",
+                       help="Similarity metric (COSINE, IP, L2)")
     
     args = parser.parse_args()
     
@@ -742,7 +780,10 @@ def main():
         batch_size=args.batch_size,
         cache_path=args.cache if not args.no_cache else None,
         use_cache=not args.no_cache,
-        device=args.device
+        device=args.device,
+        embedding_dim=args.embedding_dim,
+        index_type=args.index_type,
+        metric_type=args.metric_type
     )
 
 

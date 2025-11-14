@@ -45,8 +45,10 @@ The Milvus Lite databases ship with the repo so researchers can immediately insp
 
 | Database File                                       | Collection      | Rows | Dim | Index |
 |-----------------------------------------------------|-----------------|------|-----|-------|
-| `experiments/milvus_release/databases/milvus_grocery.db` | `grocery_items` | 520  | 128 | FLAT (cosine) |
-| `experiments/milvus_release/databases/milvus_liquor.db`  | `liquor_items`  | 3,873| 128 | FLAT (cosine) |
+| `experiments/milvus_release/databases/milvus_grocery.db` | `grocery_items` | 520  | 128 | FLAT (cosine) – lower latency |
+| `experiments/milvus_release/databases/milvus_grocery_dim256.db` | `grocery_items_dim256` | 520 | 256 | FLAT (cosine) – higher accuracy |
+| `experiments/milvus_release/databases/milvus_liquor.db`  | `liquor_items`  | 3,873| 128 | FLAT (cosine) – lower latency |
+| `experiments/milvus_release/databases/milvus_liquor_dim256.db`  | `liquor_items_dim256`  | 3,873| 256 | FLAT (cosine) – higher accuracy |
 
 ## Results Snapshot
 
@@ -54,6 +56,11 @@ The Milvus Lite databases ship with the repo so researchers can immediately insp
 ![Liquor Metrics](experiments/milvus_release/figures/liquor_comparison.png)
 
 *Grocery baselines remain low without fine-tuning; liquor YOLOv8m achieves ~0.48 mAP@0.5 and serves as the reference for hybrid retrieval.*
+
+### Embedding Variants & Trade-offs
+- **128-D FLAT** collections prioritize query speed and compact storage—ideal for edge deployments and latency-sensitive use cases.
+- **256-D FLAT** collections capture richer texture/label cues for visually similar SKUs, improving matching robustness at the cost of ~2× larger vectors and slightly slower searches. Switch between collections inside `experiment_config.yaml` to benchmark latency vs. accuracy.
+- Milvus Lite (bundled in these DB files) is free and runs locally; no external server or license is required.
 
 ## Reproducing the Study
 
@@ -87,6 +94,17 @@ The Milvus Lite databases ship with the repo so researchers can immediately insp
    git branch -M main
    git push -u origin main
    ```
+
+### Latency vs. Accuracy Benchmarking
+Use `experiments/milvus_release/benchmark_embeddings.py` to compare two Milvus collections:
+```bash
+python experiments/milvus_release/benchmark_embeddings.py \
+  --dataset data/roboflow/liquor-data-v4/data.yaml \
+  --yolo-weights yolov8m_liquor.pt \
+  --collection-a-config configs/collection_128d.json \
+  --collection-b-config configs/collection_256d.json
+```
+Each JSON config should define `name`, `milvus_db`, `collection`, and `top_k`. The script logs per-query latency and approximate hit rate so you can quantify the trade-off between the 128-D (fast) and 256-D (richer) embeddings or any other index combinations you experiment with.
 
 ## References
 
