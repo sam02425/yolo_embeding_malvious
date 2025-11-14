@@ -1,0 +1,148 @@
+✅ Using existing YOLOv8 model: yolov8m.pt
+✅ Using existing YOLOv11 model: yolo11n.pt
+
+================================================================================
+Running Experiment: YOLOv8_Baseline_488_Classes
+================================================================================
+
+Evaluating YOLO baseline model...
+Ultralytics 8.3.221 🚀 Python-3.12.3 torch-2.10.0.dev20251104+cu130 CUDA:0 (NVIDIA GeForce RTX 5080, 15832MiB)
+YOLOv8m summary (fused): 92 layers, 25,886,080 parameters, 0 gradients, 78.9 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 5820.5±1607.1 MB/s, size: 57.1 KB)
+[K[34m[1mval: [0mScanning /home/currycareation/Desktop/360images/360Image/data/roboflow/grocery-rfn8l-v1/valid/labels.cache... 219 images, 0 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 219/219 91.9Mit/s 0.0s[K[34m[1mval: [0mScanning /home/currycareation/Desktop/360images/360Image/data/roboflow/grocery-rfn8l-v1/valid/labels.cache... 219 images, 0 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 219/219 9.6Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 7% ╸─────────── 1/14 1.8it/s 0.2s<7.3s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 14% ━╸────────── 2/14 3.2it/s 0.3s<3.8s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 21% ━━╸───────── 3/14 4.0it/s 0.5s<2.8s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 29% ━━━───────── 4/14 5.1it/s 0.6s<2.0s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 43% ━━━━━─────── 6/14 7.7it/s 0.8s<1.0s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 57% ━━━━━━╸───── 8/14 9.5it/s 0.9s<0.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 71% ━━━━━━━━╸─── 10/14 10.2it/s 1.1s<0.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 86% ━━━━━━━━━━── 12/14 11.0it/s 1.2s<0.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 14/14 10.2it/s 1.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 14/14 10.2it/s 1.4s
+                   all        219        499    0.00749     0.0617    0.00764    0.00576
+Speed: 1.0ms preprocess, 3.6ms inference, 0.0ms loss, 0.4ms postprocess per image
+Results saved to [1m/home/currycareation/Desktop/360images/360Image/runs/detect/val11[0m
+
+Results for YOLOv8_Baseline_488_Classes:
+  mAP@0.5: 0.0076
+  Precision: 0.0075
+  Recall: 0.0617
+  F1-Score: 0.0134
+  Inference Time: 3.65 ms
+  FPS: 274.07
+
+================================================================================
+Running Experiment: YOLOv11_Baseline_488_Classes
+================================================================================
+
+Evaluating YOLO baseline model...
+Ultralytics 8.3.221 🚀 Python-3.12.3 torch-2.10.0.dev20251104+cu130 CUDA:0 (NVIDIA GeForce RTX 5080, 15832MiB)
+YOLO11n summary (fused): 100 layers, 2,616,248 parameters, 0 gradients, 6.5 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 5849.8±2051.3 MB/s, size: 65.6 KB)
+[K[34m[1mval: [0mScanning /home/currycareation/Desktop/360images/360Image/data/roboflow/grocery-rfn8l-v1/valid/labels.cache... 219 images, 0 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 219/219 131.2Mit/s 0.0s[K[34m[1mval: [0mScanning /home/currycareation/Desktop/360images/360Image/data/roboflow/grocery-rfn8l-v1/valid/labels.cache... 219 images, 0 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 219/219 10.3Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 7% ╸─────────── 1/14 1.3it/s 0.2s<9.9s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 14% ━╸────────── 2/14 2.2it/s 0.5s<5.5s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 21% ━━╸───────── 3/14 3.2it/s 0.6s<3.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 36% ━━━━──────── 5/14 6.4it/s 0.8s<1.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 64% ━━━━━━━╸──── 9/14 12.8it/s 0.9s<0.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 93% ━━━━━━━━━━━─ 13/14 19.8it/s 1.0s<0.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 14/14 13.1it/s 1.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 14/14 13.1it/s 1.1s
+                   all        219        499     0.0142      0.072     0.0148      0.013
+Speed: 1.6ms preprocess, 1.0ms inference, 0.0ms loss, 0.2ms postprocess per image
+Results saved to [1m/home/currycareation/Desktop/360images/360Image/runs/detect/val12[0m
+/home/currycareation/Desktop/360images/360Image/.venv/lib/python3.12/site-packages/torch/backends/__init__.py:46: UserWarning: Please use the new API settings to control TF32 behavior, such as torch.backends.cudnn.conv.fp32_precision = 'tf32' or torch.backends.cuda.matmul.fp32_precision = 'ieee'. Old settings, e.g, torch.backends.cuda.matmul.allow_tf32 = True, torch.backends.cudnn.allow_tf32 = True, allowTF32CuDNN() and allowTF32CuBLAS() will be deprecated after Pytorch 2.9. Please see https://pytorch.org/docs/main/notes/cuda.html#tensorfloat-32-tf32-on-ampere-and-later-devices (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:45.)
+  self.setter(val)
+/home/currycareation/Desktop/360images/360Image/.venv/lib/python3.12/site-packages/milvus_lite/__init__.py:15: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+
+Results for YOLOv11_Baseline_488_Classes:
+  mAP@0.5: 0.0148
+  Precision: 0.0142
+  Recall: 0.0720
+  F1-Score: 0.0237
+  Inference Time: 1.04 ms
+  FPS: 960.21
+
+================================================================================
+Running Experiment: YOLOv8_DOLG_Milvus_Hybrid
+================================================================================
+
+⚠️  DOLG weights not found at dolg_model.pth
+   Using EfficientNet pretrained on ImageNet
+   For best results, train DOLG model on retail dataset
+✅ Model compiled with torch.compile for faster inference
+✅ DOLG Extractor initialized on cuda:0
+   Batch size: 32
+   Mixed precision: True
+
+================================================================================
+Setting up Milvus Vector Database
+================================================================================
+
+📦 Creating new Milvus database: milvus_yolov8_dolg_milv_b3901e.db
+
+✅ Milvus setup complete
+
+✅ Connected to Milvus database: milvus_yolov8_dolg_milv_b3901e.db
+🔥 Warming up GPU for optimal performance...
+✅ GPU warmed up
+✅ Hybrid detector ready for production inference
+Evaluating hybrid model...
+0it [00:00, ?it/s]0it [00:00, ?it/s]
+/home/currycareation/Desktop/360images/360Image/.venv/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:3860: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/home/currycareation/Desktop/360images/360Image/.venv/lib/python3.12/site-packages/numpy/_core/_methods.py:145: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+✅ Milvus connection closed
+
+Results for YOLOv8_DOLG_Milvus_Hybrid:
+  mAP@0.5: 0.0000
+  Precision: 0.0000
+  Recall: 0.0000
+  F1-Score: 0.0000
+  Inference Time: nan ms
+  FPS: nan
+
+================================================================================
+Running Experiment: YOLOv8_DOLG_Milvus_HighThreshold
+================================================================================
+
+⚠️  DOLG weights not found at dolg_model.pth
+   Using EfficientNet pretrained on ImageNet
+   For best results, train DOLG model on retail dataset
+✅ Model compiled with torch.compile for faster inference
+✅ DOLG Extractor initialized on cuda:0
+   Batch size: 32
+   Mixed precision: True
+
+================================================================================
+Setting up Milvus Vector Database
+================================================================================
+
+📦 Creating new Milvus database: milvus_yolov8_dolg_milv_b13731.db
+
+✅ Milvus setup complete
+
+✅ Connected to Milvus database: milvus_yolov8_dolg_milv_b13731.db
+🔥 Warming up GPU for optimal performance...
+✅ GPU warmed up
+✅ Hybrid detector ready for production inference
+Evaluating hybrid model...
+0it [00:00, ?it/s]0it [00:00, ?it/s]
+/home/currycareation/Desktop/360images/360Image/.venv/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:3860: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/home/currycareation/Desktop/360images/360Image/.venv/lib/python3.12/site-packages/numpy/_core/_methods.py:145: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+✅ Milvus connection closed
+
+Results for YOLOv8_DOLG_Milvus_HighThreshold:
+  mAP@0.5: 0.0000
+  Precision: 0.0000
+  Recall: 0.0000
+  F1-Score: 0.0000
+  Inference Time: nan ms
+  FPS: nan
+
+====================================================================================================
+EXPERIMENT COMPARISON REPORT
+====================================================================================================
+
+Experiment                                  mAP@0.5  Precision     Recall         F1        FPS     Milvus
+----------------------------------------------------------------------------------------------------
+YOLOv8_Baseline_488_Classes                  0.0076     0.0075     0.0617     0.0134     274.07        N/A
+YOLOv11_Baseline_488_Classes                 0.0148     0.0142     0.0720     0.0237     960.21        N/A
+YOLOv8_DOLG_Milvus_Hybrid                    0.0000     0.0000     0.0000     0.0000        nan        N/A
+YOLOv8_DOLG_Milvus_HighThreshold             0.0000     0.0000     0.0000     0.0000        nan        N/A
+
+====================================================================================================
+
+Comparison report saved to: experiment_comparison.json
+
+✅ All experiments completed successfully!
+📊 View results in MLflow UI: mlflow ui --backend-store-uri file:./mlruns

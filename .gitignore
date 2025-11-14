@@ -1,0 +1,19 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Logs and checkpoints generated after release
+dev_logs/
+runs/
+mlruns/
+*.pt
+*.pth
+
+# OS files
+.DS_Store
+Thumbs.db
