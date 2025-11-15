@@ -1,0 +1,14 @@
+
+################################################################################
+# RETAIL ITEM DETECTION - COMPLETE EXPERIMENTAL PIPELINE
+################################################################################
+
+Traceback (most recent call last):
+  File "/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/run_experiments.py", line 641, in <module>
+    main()
+  File "/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/run_experiments.py", line 597, in main
+    orchestrator.run_complete_pipeline()
+  File "/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/run_experiments.py", line 531, in run_complete_pipeline
+    train_config = self.config['training']
+                   ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'training'

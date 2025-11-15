@@ -1,0 +1,104 @@
+/home/currycareation/.local/lib/python3.12/site-packages/milvus_lite/__init__.py:15: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+
+🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
+PRODUCTION-GRADE MILVUS POPULATION PIPELINE
+🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
+
+🎮 GPU Device: NVIDIA GeForce RTX 5080
+💾 GPU Memory: 15.46 GB
+
+📦 Loading cached embeddings from: experiment_results/embedding_cache.pkl
+✅ Loaded cached embeddings (0.27 MB)
+
+🗄️  Initializing Production Milvus Database...
+
+================================================================================
+Setting up Milvus Vector Database for Production
+================================================================================
+
+✅ Found existing Milvus database: experiment_results/milvus_retail_enhanced.db
+
+✅ Milvus setup complete
+
+✅ Connected to Milvus database: experiment_results/milvus_retail_enhanced.db
+🗑️  Dropping existing collection: retail_items
+📊 Creating production collection: retail_items
+✅ Collection 'retail_items' created successfully
+   Embedding dimension: 128
+   Index type: FLAT
+   Metric type: COSINE
+
+📋 Preparing embeddings for batch insertion...
+
+📥 Inserting 520 embeddings into Milvus...
+   Batch size: 1000
+Inserting batches:   0%|          | 0/1 [00:00<?, ?it/s]Inserting batches: 100%|██████████| 1/1 [00:00<00:00, 66.47it/s]
+💾 Flushing data to disk...
+
+✅ Successfully inserted 520 embeddings
+   Collection stats: {'row_count': 520}
+
+
+================================================================================
+✅ MILVUS DATABASE POPULATION COMPLETE
+================================================================================
+📊 Database: experiment_results/milvus_retail_enhanced.db
+📦 Collection: retail_items
+🔢 Total embeddings: 520
+🏷️  Total classes: 59
+📈 Collection stats: {'row_count': 520}
+🎯 Ready for production similarity search!
+================================================================================
+
+✅ Milvus connection closed
+🧹 GPU memory cleaned up
+
+✅ Using existing YOLOv8 model: scripts/yolov8m.pt
+✅ Using existing YOLOv11 model: scripts/yolo11m.pt
+
+================================================================================
+Running Experiment: YOLOv8_Baseline_488_Classes
+================================================================================
+
+Evaluating YOLO baseline model...
+Ultralytics 8.3.221 🚀 Python-3.12.3 torch-2.9.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080, 15832MiB)
+YOLOv8m summary (fused): 92 layers, 25,886,080 parameters, 0 gradients, 78.9 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 7015.6±1713.5 MB/s, size: 71.5 KB)
+[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 124.2Mit/s 0.0s[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 11.8Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 5% ╸─────────── 1/19 2.9it/s 0.1s<6.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 11% ━─────────── 2/19 4.0it/s 0.3s<4.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 16% ━╸────────── 3/19 4.5it/s 0.4s<3.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 21% ━━╸───────── 4/19 5.6it/s 0.6s<2.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 32% ━━━╸──────── 6/19 7.8it/s 0.7s<1.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 8/19 9.4it/s 0.9s<1.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 53% ━━━━━━────── 10/19 10.0it/s 1.0s<0.9s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 63% ━━━━━━━╸──── 12/19 10.9it/s 1.2s<0.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 74% ━━━━━━━━╸─── 14/19 11.6it/s 1.3s<0.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 84% ━━━━━━━━━━── 16/19 12.2it/s 1.5s<0.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 95% ━━━━━━━━━━━─ 18/19 12.0it/s 1.7s<0.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 11.2it/s 1.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 11.2it/s 1.7s
+                   all        296        499    0.00678     0.0617    0.00681    0.00509
+Speed: 0.8ms preprocess, 3.8ms inference, 0.0ms loss, 0.3ms postprocess per image
+Results saved to [1m/home/currycareation/Desktop/yolo_embeding_malvious_repo/runs/detect/val51[0m
+
+Results for YOLOv8_Baseline_488_Classes:
+  mAP@0.5: 0.0068
+  Precision: 0.0068
+  Recall: 0.0617
+  F1-Score: 0.0122
+  Inference Time: 3.80 ms
+  FPS: 263.45
+
+================================================================================
+Running Experiment: YOLOv11_Baseline_488_Classes
+================================================================================
+
+Evaluating YOLO baseline model...
+Ultralytics 8.3.221 🚀 Python-3.12.3 torch-2.9.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080, 15832MiB)
+YOLO11m summary (fused): 125 layers, 20,091,712 parameters, 0 gradients, 68.0 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 5997.2±1833.2 MB/s, size: 67.6 KB)
+[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 155.2Mit/s 0.0s[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 11.9Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 5% ╸─────────── 1/19 1.4it/s 0.2s<12.8s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 11% ━─────────── 2/19 2.6it/s 0.4s<6.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 16% ━╸────────── 3/19 3.8it/s 0.5s<4.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 21% ━━╸───────── 4/19 5.2it/s 0.7s<2.9s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 32% ━━━╸──────── 6/19 7.5it/s 0.8s<1.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 8/19 9.0it/s 1.0s<1.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 53% ━━━━━━────── 10/19 9.9it/s 1.1s<0.9s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 63% ━━━━━━━╸──── 12/19 10.6it/s 1.3s<0.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 74% ━━━━━━━━╸─── 14/19 11.3it/s 1.5s<0.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 84% ━━━━━━━━━━── 16/19 11.9it/s 1.6s<0.3s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 95% ━━━━━━━━━━━─ 18/19 11.6it/s 1.8s<0.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 10.3it/s 1.8s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 10.3it/s 1.8s
+                   all        296        499    0.00478     0.0485    0.00626    0.00405
+Speed: 1.0ms preprocess, 3.9ms inference, 0.0ms loss, 0.3ms postprocess per image
+Results saved to [1m/home/currycareation/Desktop/yolo_embeding_malvious_repo/runs/detect/val52[0m
+/home/currycareation/.local/lib/python3.12/site-packages/torch/backends/__init__.py:46: UserWarning: Please use the new API settings to control TF32 behavior, such as torch.backends.cudnn.conv.fp32_precision = 'tf32' or torch.backends.cuda.matmul.fp32_precision = 'ieee'. Old settings, e.g, torch.backends.cuda.matmul.allow_tf32 = True, torch.backends.cudnn.allow_tf32 = True, allowTF32CuDNN() and allowTF32CuBLAS() will be deprecated after Pytorch 2.9. Please see https://pytorch.org/docs/main/notes/cuda.html#tensorfloat-32-tf32-on-ampere-and-later-devices (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:80.)
+  self.setter(val)
+/home/currycareation/.local/lib/python3.12/site-packages/milvus_lite/__init__.py:15: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:331: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:281: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:331: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():

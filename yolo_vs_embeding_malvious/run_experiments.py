@@ -532,9 +532,14 @@ class ExperimentOrchestrator:
         
         # Step 1: Determine YOLOv8 model path
         if not train_config.get('train_yolov8', True):
-            # Skip YOLOv8 training completely
+            # Skip YOLOv8 training - use pretrained if available, else base
             print(f"\n⏭️  Skipping YOLOv8 training (train_yolov8: false)")
-            trained_models['yolov8'] = train_config['yolov8_base']
+            if 'yolov8_pretrained' in train_config and Path(train_config['yolov8_pretrained']).exists():
+                trained_models['yolov8'] = train_config['yolov8_pretrained']
+                print(f"✅ Using pretrained YOLOv8 model: {train_config['yolov8_pretrained']}")
+            else:
+                trained_models['yolov8'] = train_config['yolov8_base']
+                print(f"⚠️  No pretrained model found, using base: {train_config['yolov8_base']}")
         else:
             # Check for pretrained or train
             yolov8_model = self.run_yolo_training('yolov8', 'yolov8_488_classes')
@@ -542,9 +547,14 @@ class ExperimentOrchestrator:
         
         # Step 2: Determine YOLOv11 model path
         if not train_config.get('train_yolov11', True):
-            # Skip YOLOv11 training completely
+            # Skip YOLOv11 training - use pretrained if available, else base
             print(f"\n⏭️  Skipping YOLOv11 training (train_yolov11: false)")
-            trained_models['yolov11'] = train_config['yolov11_base']
+            if 'yolov11_pretrained' in train_config and Path(train_config['yolov11_pretrained']).exists():
+                trained_models['yolov11'] = train_config['yolov11_pretrained']
+                print(f"✅ Using pretrained YOLOv11 model: {train_config['yolov11_pretrained']}")
+            else:
+                trained_models['yolov11'] = train_config['yolov11_base']
+                print(f"⚠️  No pretrained model found, using base: {train_config['yolov11_base']}")
         else:
             # Check for pretrained or train
             yolov11_model = self.run_yolo_training('yolov11', 'yolov11_488_classes')

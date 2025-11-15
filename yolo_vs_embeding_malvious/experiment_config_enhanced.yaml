@@ -1,33 +1,73 @@
 # Enhanced Experiment Configuration with Retail-Trained DOLG and Confidence Ensemble
 # Run with: python yolo_vs_embeding_malvious/run_experiments.py --config yolo_vs_embeding_malvious/experiment_config_enhanced.yaml
 
-# General settings
-device: "cuda:0"
-batch_size: 16
-imgsz: 640
+results_dir: ./experiment_results
 
-# Dataset configuration
+# Training configuration (skip training, use existing models)
+training:
+  dataset_yaml: 'data/grocery_augmented/grocery_augmented.yaml'
+  yolov8_base: scripts/yolov8m.pt
+  yolov11_base: scripts/yolo11m.pt
+  yolov8_pretrained: grocery/runs/yolov8_grocery_baseline_20251114_194239/weights/best.pt
+  yolov11_pretrained: grocery/runs/yolo11_grocery_baseline_20251114_1953262/weights/best.pt
+  train_yolov8: false  # Skip training, use pretrained
+  train_yolov11: false  # Skip training, use pretrained
+  force_retrain: false
+  use_tuning: false
+  epochs: 100
+  tuning_epochs: 50
+  tuning_iterations: 30
+  imgsz: 640
+  batch_size: 16
+  device: cuda:0
+  workers: 8
+  use_amp: true
+  mlflow_uri: file:./mlruns
+
+# Dataset configuration (legacy, kept for compatibility)
 dataset:
-  path: "data/grocery_augmented/grocery_augmented.yaml"  # Main dataset
+  path: "data/grocery_augmented/grocery_augmented.yaml"
   name: "grocery_augmented"
 
 # Milvus configuration
 milvus:
+  dolg_model_path: dolg_model.pth  # Legacy ImageNet DOLG (for comparison)
+  db_name: milvus_retail_enhanced.db
   collection_name: "retail_items"
   embedding_dim: 128
   index_type: "FLAT"
   metric_type: "COSINE"
-  db_path: "experiment_results/milvus_retail.db"
   max_templates_per_class: 10
+  batch_size: 32
+  use_amp: true
+  auto_setup: true
+
+# Experiment control
+experiments:
+  run_all: true
+  baseline_only: false
+  use_milvus: true
+  similarity_threshold: 0.20  # Default for retail DOLG experiments
+  device: cuda:0
+  batch_inference: true
 
 # Advanced settings
 advanced:
+  use_embedding_cache: true
+  embedding_cache_path: embedding_cache_enhanced.pkl
+  generate_visualizations: true
+  generate_report: true
   iou_threshold: 0.25  # For bbox matching in evaluation (adjusted for dataset quality)
+  conf_threshold: 0.25
+  pin_memory: true
+  persistent_workers: true
+  cudnn_benchmark: true
+  tf32: true
   enable_mlflow: true
   mlflow_experiment_name: "retail_detection_enhanced"
 
-# Experiments to run
-experiments:
+# Individual experiments list
+experiment_list:
   # === BASELINE EXPERIMENTS ===
   
   - name: "YOLOv8_Baseline"

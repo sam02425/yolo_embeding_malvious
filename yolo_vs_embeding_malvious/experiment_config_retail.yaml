@@ -1,0 +1,54 @@
+# Enhanced Experiment Configuration - Retail DOLG Testing
+# Simplified config to work with existing run_experiments.py
+# Run with: python yolo_vs_embeding_malvious/run_experiments.py --config yolo_vs_embeding_malvious/experiment_config_retail.yaml
+
+results_dir: ./experiment_results
+
+training:
+  dataset_yaml: 'data/grocery_augmented/grocery_augmented.yaml'
+  yolov8_base: scripts/yolov8m.pt
+  yolov11_base: scripts/yolo11m.pt
+  yolov8_pretrained: grocery/runs/yolov8_grocery_baseline_20251114_194239/weights/best.pt
+  yolov11_pretrained: grocery/runs/yolo11_grocery_baseline_20251114_1953262/weights/best.pt
+  train_yolov8: false  # Skip training, use pretrained
+  train_yolov11: false  # Skip training, use pretrained  
+  force_retrain: false
+  use_tuning: false
+  epochs: 100
+  tuning_epochs: 50
+  tuning_iterations: 30
+  imgsz: 640
+  batch_size: 16
+  device: cuda:0
+  workers: 8
+  use_amp: true
+  mlflow_uri: file:./mlruns
+
+milvus:
+  dolg_model_path: dolg_retail_model/dolg_retail_best.pth  # Use retail-trained DOLG
+  db_name: milvus_retail_enhanced.db
+  collection_name: retail_items
+  max_templates_per_class: 10
+  batch_size: 32
+  use_amp: true
+  auto_setup: true
+
+experiments:
+  run_all: true
+  baseline_only: false
+  use_milvus: true
+  similarity_threshold: 0.20  # Adjusted for retail DOLG embeddings
+  device: cuda:0
+  batch_inference: true
+
+advanced:
+  use_embedding_cache: false  # Disable cache to force fresh embeddings
+  embedding_cache_path: embedding_cache_retail.pkl
+  generate_visualizations: true
+  generate_report: true
+  iou_threshold: 0.25
+  conf_threshold: 0.25
+  pin_memory: true
+  persistent_workers: true
+  cudnn_benchmark: true
+  tf32: true

@@ -165,38 +165,75 @@ class DOLGEmbeddingExtractor:
     def _load_dolg_model(self, model_path: str):
         """Load production-grade DOLG model"""
         import torch.nn as nn
-        import torchvision.models as models
+        import timm
         
         class ProductionDOLGModel(nn.Module):
-            """Production DOLG model with EfficientNet-B0 backbone"""
-            def __init__(self, embedding_dim=128):
+            """Production DOLG model compatible with retail-trained checkpoints"""
+            def __init__(self, embedding_dim=128, backbone='efficientnet_b0', pretrained=False):
                 super().__init__()
-                # Use EfficientNet-B0 as backbone
-                self.backbone = models.efficientnet_b0(weights='IMAGENET1K_V1')
+                # Backbone (same architecture as train_dolg_retail.py)
+                self.backbone = timm.create_model(backbone, pretrained=pretrained, 
+                                                 features_only=True, out_indices=[3])
                 
                 # Get feature dimension
-                in_features = self.backbone.classifier[1].in_features
+                with torch.no_grad():
+                    dummy_input = torch.zeros(1, 3, 224, 224)
+                    features = self.backbone(dummy_input)[0]
+                    feat_dim = features.shape[1]
                 
-                # Replace classifier with production embedding layer
-                self.backbone.classifier = nn.Sequential(
-                    nn.Dropout(p=0.3),  # Increased dropout for better generalization
-                    nn.Linear(in_features, 512),
+                # Global pooling
+                self.global_pool = nn.AdaptiveAvgPool2d(1)
+                
+                # Embedding head (same as train_dolg_retail.py)
+                self.embedding_head = nn.Sequential(
+                    nn.Linear(feat_dim, 512),
                     nn.BatchNorm1d(512),
                     nn.ReLU(inplace=True),
-                    nn.Dropout(p=0.2),
-                    nn.Linear(512, embedding_dim),
+                    nn.Dropout(0.3),
+                    nn.Linear(512, embedding_dim)
                 )
                 
+                # Classification head (not used for inference, but needed for checkpoint compatibility)
+                self.classifier = nn.Linear(embedding_dim, 59)  # 59 classes for retail dataset
+                
+                # L2 normalization
+                self.l2_norm = lambda x: nn.functional.normalize(x, p=2, dim=1)
+                
             def forward(self, x):
-                return self.backbone(x)
+                # Extract features
+                features = self.backbone(x)[0]  # [B, C, H, W]
+                
+                # Global pooling
+                global_feat = self.global_pool(features).flatten(1)  # [B, C]
+                
+                # Get embeddings
+                embeddings = self.embedding_head(global_feat)
+                embeddings = self.l2_norm(embeddings)
+                
+                return embeddings
         
-        model = ProductionDOLGModel(embedding_dim=128)
+        model = ProductionDOLGModel(embedding_dim=128, backbone='efficientnet_b0', pretrained=False)
         
         # Load pretrained weights if they exist
         if Path(model_path).exists():
             print(f"✅ Loading DOLG weights from: {model_path}")
-            state_dict = torch.load(model_path, map_location=self.device, weights_only=True)
-            model.load_state_dict(state_dict)
+            checkpoint = torch.load(model_path, map_location=self.device, weights_only=True)
+            
+            # Handle different checkpoint formats
+            if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
+                # Retail-trained model format (from train_dolg_retail.py)
+                print(f"   📦 Loading retail-trained model (epoch {checkpoint.get('epoch', 'N/A')}, val_acc: {checkpoint.get('val_acc', 0):.2f}%)")
+                state_dict = checkpoint['model_state_dict']
+            else:
+                # Direct state_dict format
+                state_dict = checkpoint
+            
+            # Load state dict (strict=False to allow missing classifier if num_classes differs)
+            missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
+            if missing_keys:
+                print(f"   ℹ️  Missing keys (OK if only classifier): {len(missing_keys)} keys")
+            if unexpected_keys:
+                print(f"   ℹ️  Unexpected keys: {len(unexpected_keys)} keys")
         else:
             print(f"⚠️  DOLG weights not found at {model_path}")
             print("   Using EfficientNet pretrained on ImageNet")
@@ -713,10 +750,11 @@ class HybridYOLODetector:
         milvus_attempted = 0
         
         for i, (info, embedding) in enumerate(zip(detection_info, embeddings)):
-            # Confidence-based ensemble: Only use Milvus when YOLO confidence is low
-            should_use_milvus = True
-            if self.use_confidence_ensemble:
-                should_use_milvus = info['confidence'] < self.confidence_threshold
+            # IMPROVED HYBRID LOGIC: Keep YOLO predictions, use Milvus for refinement
+            # Default: YOLO predictions are primary (since YOLO is trained on these classes)
+            # Milvus should only override when:
+            #   1. YOLO confidence is low (uncertain detection)
+            #   2. Milvus similarity is VERY high (confident match)
             
             # Default to YOLO prediction
             final_class_id = info['yolo_class_id']
@@ -724,14 +762,30 @@ class HybridYOLODetector:
             milvus_similarity = 0.0
             used_milvus = False
             
-            if should_use_milvus:
-                milvus_attempted += 1
-                # Search Milvus
-                similar_items = self.milvus_db.search_similar(embedding, top_k=1)
+            # Always search Milvus for analysis, but only use if conditions met
+            milvus_attempted += 1
+            similar_items = self.milvus_db.search_similar(embedding, top_k=1)
+            
+            if similar_items:
+                milvus_similarity = similar_items[0]['distance']
                 
-                # Use Milvus result if similarity is high enough
-                if similar_items and similar_items[0]['distance'] >= self.similarity_threshold:
-                    milvus_similarity = similar_items[0]['distance']
+                # SMART HYBRID DECISION:
+                # Use Milvus only if:
+                # 1. YOLO confidence is low (< confidence_threshold) OR
+                # 2. Milvus similarity is exceptionally high (> 0.9) AND exceeds threshold
+                should_use_milvus = False
+                
+                if self.use_confidence_ensemble:
+                    # Confidence ensemble mode: only use Milvus for uncertain detections
+                    should_use_milvus = info['confidence'] < self.confidence_threshold
+                else:
+                    # Standard mode: use Milvus if similarity is very high (keep YOLO as primary)
+                    # Require both high absolute similarity (>0.9) and above threshold
+                    should_use_milvus = (milvus_similarity > 0.9 and 
+                                        milvus_similarity >= self.similarity_threshold)
+                
+                # Override YOLO prediction only if Milvus is confident enough
+                if should_use_milvus and milvus_similarity >= self.similarity_threshold:
                     final_class_id = similar_items[0]['entity']['class_id']
                     final_class_name = similar_items[0]['entity']['class_name']
                     used_milvus = True

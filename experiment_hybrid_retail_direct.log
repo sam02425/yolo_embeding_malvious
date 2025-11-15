@@ -1,0 +1,127 @@
+✅ Using existing YOLOv8 model: scripts/yolov8m.pt
+⚠️  YOLOv11 model not found at: yolo11m.pt
+   Will download base weights if available
+
+================================================================================
+Running Experiment: YOLOv8_Baseline_488_Classes
+================================================================================
+
+Evaluating YOLO baseline model...
+Ultralytics 8.3.221 🚀 Python-3.12.3 torch-2.9.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080, 15832MiB)
+YOLOv8m summary (fused): 92 layers, 25,886,080 parameters, 0 gradients, 78.9 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 7087.8±1399.9 MB/s, size: 70.4 KB)
+[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 112.9Mit/s 0.0s[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 11.6Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 5% ╸─────────── 1/19 2.8it/s 0.1s<6.5s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 11% ━─────────── 2/19 3.9it/s 0.3s<4.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 16% ━╸────────── 3/19 4.5it/s 0.4s<3.5s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 21% ━━╸───────── 4/19 5.6it/s 0.6s<2.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 32% ━━━╸──────── 6/19 7.8it/s 0.7s<1.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 8/19 9.1it/s 0.9s<1.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 53% ━━━━━━────── 10/19 10.1it/s 1.0s<0.9s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 63% ━━━━━━━╸──── 12/19 10.9it/s 1.2s<0.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 74% ━━━━━━━━╸─── 14/19 11.5it/s 1.3s<0.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 84% ━━━━━━━━━━── 16/19 11.9it/s 1.5s<0.3s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 95% ━━━━━━━━━━━─ 18/19 12.2it/s 1.7s<0.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 11.2it/s 1.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 11.2it/s 1.7s
+                   all        296        499    0.00678     0.0617    0.00681    0.00509
+Speed: 0.8ms preprocess, 3.8ms inference, 0.0ms loss, 0.3ms postprocess per image
+Results saved to [1m/home/currycareation/Desktop/yolo_embeding_malvious_repo/runs/detect/val53[0m
+
+Results for YOLOv8_Baseline_488_Classes:
+  mAP@0.5: 0.0068
+  Precision: 0.0068
+  Recall: 0.0617
+  F1-Score: 0.0122
+  Inference Time: 3.82 ms
+  FPS: 261.92
+
+================================================================================
+Running Experiment: YOLOv11_Baseline_488_Classes
+================================================================================
+
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 2% ──────────── 993.3KB/38.8MB 9.6MB/s 0.1s<3.9s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 6% ╸─────────── 2.4/38.8MB 13.9MB/s 0.2s<2.6s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 10% ━─────────── 3.8/38.8MB 14.0MB/s 0.3s<2.5s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 13% ━╸────────── 5.1/38.8MB 8.7MB/s 0.5s<3.9s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 19% ━━────────── 7.3/38.8MB 21.5MB/s 0.6s<1.5s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 23% ━━╸───────── 8.8/38.8MB 14.0MB/s 0.7s<2.1s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 26% ━━━───────── 10.2/38.8MB 13.9MB/s 0.8s<2.1s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 30% ━━━╸──────── 11.6/38.8MB 14.0MB/s 0.9s<1.9s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 33% ━━━━──────── 13.0/38.8MB 13.7MB/s 1.0s<1.9s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 36% ━━━━──────── 14.1/38.8MB 10.6MB/s 1.1s<2.3s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 41% ━━━━╸─────── 15.9/38.8MB 17.3MB/s 1.2s<1.3s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 45% ━━━━━─────── 17.3/38.8MB 14.0MB/s 1.3s<1.5s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 48% ━━━━━╸────── 18.7/38.8MB 14.0MB/s 1.4s<1.4s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 51% ━━━━━━────── 19.9/38.8MB 11.5MB/s 1.5s<1.6s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 55% ━━━━━━╸───── 21.2/38.8MB 12.6MB/s 1.6s<1.4s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 58% ━━━━━━╸───── 22.6/38.8MB 13.9MB/s 1.7s<1.2s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 62% ━━━━━━━───── 24.0/38.8MB 13.9MB/s 1.8s<1.1s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 65% ━━━━━━━╸──── 25.4/38.8MB 13.3MB/s 1.9s<1.0s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 69% ━━━━━━━━──── 26.7/38.8MB 12.9MB/s 2.0s<0.9s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 72% ━━━━━━━━╸─── 28.1/38.8MB 14.1MB/s 2.1s<0.8s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 76% ━━━━━━━━━─── 29.6/38.8MB 13.8MB/s 2.2s<0.7s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 80% ━━━━━━━━━╸── 31.0/38.8MB 13.8MB/s 2.3s<0.6s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 83% ━━━━━━━━━━── 32.4/38.8MB 14.0MB/s 2.4s<0.5s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 87% ━━━━━━━━━━── 33.7/38.8MB 12.9MB/s 2.5s<0.4s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 91% ━━━━━━━━━━╸─ 35.2/38.8MB 13.9MB/s 2.6s<0.3s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 94% ━━━━━━━━━━━─ 36.4/38.8MB 12.2MB/s 2.7s<0.2s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 97% ━━━━━━━━━━━╸ 37.8/38.8MB 13.8MB/s 2.8s<0.1s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 100% ━━━━━━━━━━━━ 38.8MB 13.5MB/s 2.9s[KDownloading https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt to 'yolo11m.pt': 100% ━━━━━━━━━━━━ 38.8MB 13.5MB/s 2.9s
+Evaluating YOLO baseline model...
+Ultralytics 8.3.221 🚀 Python-3.12.3 torch-2.9.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080, 15832MiB)
+YOLO11m summary (fused): 125 layers, 20,091,712 parameters, 0 gradients, 68.0 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 4517.8±1830.9 MB/s, size: 58.1 KB)
+[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 155.2Mit/s 0.0s[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 11.9Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 5% ╸─────────── 1/19 1.2it/s 0.2s<14.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 11% ━─────────── 2/19 2.4it/s 0.4s<7.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 16% ━╸────────── 3/19 3.7it/s 0.6s<4.3s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 21% ━━╸───────── 4/19 5.1it/s 0.7s<2.9s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 32% ━━━╸──────── 6/19 7.5it/s 0.9s<1.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 8/19 9.1it/s 1.0s<1.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 47% ━━━━━╸────── 9/19 9.4it/s 1.1s<1.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 58% ━━━━━━╸───── 11/19 10.4it/s 1.3s<0.8s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 68% ━━━━━━━━──── 13/19 11.1it/s 1.4s<0.5s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 79% ━━━━━━━━━─── 15/19 11.7it/s 1.6s<0.3s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 89% ━━━━━━━━━━╸─ 17/19 11.8it/s 1.7s<0.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 10.2it/s 1.9s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 10.2it/s 1.9s
+                   all        296        499    0.00478     0.0485    0.00626    0.00405
+Speed: 1.0ms preprocess, 3.9ms inference, 0.0ms loss, 0.3ms postprocess per image
+Results saved to [1m/home/currycareation/Desktop/yolo_embeding_malvious_repo/runs/detect/val54[0m
+/home/currycareation/.local/lib/python3.12/site-packages/torch/backends/__init__.py:46: UserWarning: Please use the new API settings to control TF32 behavior, such as torch.backends.cudnn.conv.fp32_precision = 'tf32' or torch.backends.cuda.matmul.fp32_precision = 'ieee'. Old settings, e.g, torch.backends.cuda.matmul.allow_tf32 = True, torch.backends.cudnn.allow_tf32 = True, allowTF32CuDNN() and allowTF32CuBLAS() will be deprecated after Pytorch 2.9. Please see https://pytorch.org/docs/main/notes/cuda.html#tensorfloat-32-tf32-on-ampere-and-later-devices (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:80.)
+  self.setter(val)
+/home/currycareation/.local/lib/python3.12/site-packages/milvus_lite/__init__.py:15: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:331: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:281: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:331: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+
+Results for YOLOv11_Baseline_488_Classes:
+  mAP@0.5: 0.0063
+  Precision: 0.0048
+  Recall: 0.0485
+  F1-Score: 0.0087
+  Inference Time: 3.89 ms
+  FPS: 257.40
+
+================================================================================
+Running Experiment: YOLOv8_DOLG_Milvus_Hybrid
+================================================================================
+
+📦 Using ImageNet pretrained DOLG embeddings
+✅ Loading DOLG weights from: dolg_retail_model/dolg_retail_best.pth
+   📦 Loading retail-trained model (epoch 34, val_acc: 64.68%)
+✅ DOLG Extractor initialized on cuda:0
+   Batch size: 32
+   Mixed precision: True
+✅ Connected to Milvus database: experiment_results/milvus_retail_enhanced.db
+🔥 Warming up GPU for optimal performance...
+✅ GPU warmed up
+✅ Hybrid detector ready for production inference
+Evaluating hybrid model...
+✅ Milvus connection closed
+
+Results for YOLOv8_DOLG_Milvus_Hybrid:
+  mAP@0.5: 0.0008
+  Precision: 0.0040
+  Recall: 0.0060
+  F1-Score: 0.0048
+  Inference Time: 5.37 ms
+  FPS: 186.06
+  Milvus Hit Rate: 20.78%
+
+================================================================================
+Running Experiment: YOLOv8_DOLG_Milvus_HighThreshold
+================================================================================
+
+📦 Using ImageNet pretrained DOLG embeddings
+✅ Loading DOLG weights from: dolg_retail_model/dolg_retail_best.pth
+   📦 Loading retail-trained model (epoch 34, val_acc: 64.68%)
+✅ DOLG Extractor initialized on cuda:0
+   Batch size: 32
+   Mixed precision: True
+✅ Connected to Milvus database: experiment_results/milvus_retail_enhanced.db
+🔥 Warming up GPU for optimal performance...
+✅ GPU warmed up
+✅ Hybrid detector ready for production inference
+Evaluating hybrid model...
+✅ Milvus connection closed
+
+Results for YOLOv8_DOLG_Milvus_HighThreshold:
+  mAP@0.5: 0.0000
+  Precision: 0.0027
+  Recall: 0.0040
+  F1-Score: 0.0032
+  Inference Time: 5.31 ms
+  FPS: 188.21
+
+====================================================================================================
+EXPERIMENT COMPARISON REPORT
+====================================================================================================
+
+Experiment                                  mAP@0.5  Precision     Recall         F1        FPS     Milvus
+----------------------------------------------------------------------------------------------------
+YOLOv8_Baseline_488_Classes                  0.0068     0.0068     0.0617     0.0122     261.92        N/A
+YOLOv11_Baseline_488_Classes                 0.0063     0.0048     0.0485     0.0087     257.40        N/A
+YOLOv8_DOLG_Milvus_Hybrid                    0.0008     0.0040     0.0060     0.0048     186.06       20.8
+YOLOv8_DOLG_Milvus_HighThreshold             0.0000     0.0027     0.0040     0.0032     188.21        N/A
+
+====================================================================================================
+
+Comparison report saved to: experiment_comparison.json
+
+✅ All experiments completed successfully!
+📊 View results in MLflow UI: mlflow ui --backend-store-uri file:./mlruns

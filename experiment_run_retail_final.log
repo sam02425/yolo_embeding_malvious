@@ -1,0 +1,401 @@
+/home/currycareation/.local/lib/python3.12/site-packages/torch/backends/__init__.py:46: UserWarning: Please use the new API settings to control TF32 behavior, such as torch.backends.cudnn.conv.fp32_precision = 'tf32' or torch.backends.cuda.matmul.fp32_precision = 'ieee'. Old settings, e.g, torch.backends.cuda.matmul.allow_tf32 = True, torch.backends.cudnn.allow_tf32 = True, allowTF32CuDNN() and allowTF32CuBLAS() will be deprecated after Pytorch 2.9. Please see https://pytorch.org/docs/main/notes/cuda.html#tensorfloat-32-tf32-on-ampere-and-later-devices (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:80.)
+  self.setter(val)
+
+🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
+PRODUCTION-GRADE MILVUS POPULATION PIPELINE
+🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
+
+🎮 GPU Device: NVIDIA GeForce RTX 5080
+💾 GPU Memory: 15.46 GB
+
+🔬 Initializing Production DOLG Embedding Extractor...
+✅ Loading DOLG weights from: dolg_retail_model/dolg_retail_best.pth
+   📦 Loading retail-trained model (epoch 34, val_acc: 64.68%)
+✅ Model compiled with torch.compile for faster inference
+✅ DOLG Extractor initialized on cuda:0
+   Batch size: 32
+   Mixed precision: True
+
+================================================================================
+Extracting Production-Grade DOLG Embeddings from Training Dataset
+================================================================================
+
+Number of classes: 59
+Max templates per class: 10
+Batch size for GPU: 32
+
+Found 6,152 label files
+Processing images from: /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/train/images
+
+📦 Collecting image crops...
+Scanning images:   0%|          | 0/6152 [00:00<?, ?it/s]Scanning images:   2%|▏         | 102/6152 [00:00<00:05, 1013.27it/s]Scanning images:   3%|▎         | 215/6152 [00:00<00:05, 1081.03it/s]Scanning images:   5%|▌         | 337/6152 [00:00<00:05, 1141.74it/s]Scanning images:   8%|▊         | 464/6152 [00:00<00:04, 1189.68it/s]Scanning images:  10%|▉         | 588/6152 [00:00<00:04, 1206.77it/s]Scanning images:  12%|█▏        | 715/6152 [00:00<00:04, 1225.98it/s]Scanning images:  14%|█▎        | 843/6152 [00:00<00:04, 1240.27it/s]Scanning images:  16%|█▌        | 972/6152 [00:00<00:04, 1253.42it/s]Scanning images:  18%|█▊        | 1098/6152 [00:00<00:04, 1249.21it/s]Scanning images:  20%|█▉        | 1227/6152 [00:01<00:03, 1261.45it/s]Scanning images:  22%|██▏       | 1354/6152 [00:01<00:03, 1263.96it/s]Scanning images:  24%|██▍       | 1481/6152 [00:01<00:03, 1257.76it/s]Scanning images:  26%|██▌       | 1609/6152 [00:01<00:03, 1262.04it/s]Scanning images:  28%|██▊       | 1738/6152 [00:01<00:03, 1268.70it/s]Scanning images:  30%|███       | 1865/6152 [00:01<00:03, 1268.90it/s]Scanning images:  32%|███▏      | 1993/6152 [00:01<00:03, 1270.51it/s]Scanning images:  34%|███▍      | 2121/6152 [00:01<00:03, 1269.86it/s]Scanning images:  37%|███▋      | 2250/6152 [00:01<00:03, 1274.62it/s]Scanning images:  39%|███▊      | 2379/6152 [00:01<00:02, 1277.19it/s]Scanning images:  41%|████      | 2508/6152 [00:02<00:02, 1280.23it/s]Scanning images:  43%|████▎     | 2637/6152 [00:02<00:02, 1276.60it/s]Scanning images:  45%|████▍     | 2766/6152 [00:02<00:02, 1279.35it/s]Scanning images:  47%|████▋     | 2897/6152 [00:02<00:02, 1286.31it/s]Scanning images:  49%|████▉     | 3028/6152 [00:02<00:02, 1291.17it/s]Scanning images:  51%|█████▏    | 3158/6152 [00:02<00:02, 1290.49it/s]Scanning images:  53%|█████▎    | 3290/6152 [00:02<00:02, 1297.49it/s]Scanning images:  56%|█████▌    | 3421/6152 [00:02<00:02, 1300.47it/s]Scanning images:  58%|█████▊    | 3552/6152 [00:02<00:02, 1299.26it/s]Scanning images:  60%|█████▉    | 3682/6152 [00:02<00:01, 1294.05it/s]Scanning images:  62%|██████▏   | 3812/6152 [00:03<00:01, 1294.65it/s]Scanning images:  64%|██████▍   | 3943/6152 [00:03<00:01, 1298.94it/s]Scanning images:  66%|██████▌   | 4073/6152 [00:03<00:01, 1291.87it/s]Scanning images:  68%|██████▊   | 4204/6152 [00:03<00:01, 1296.12it/s]Scanning images:  70%|███████   | 4334/6152 [00:03<00:01, 1291.39it/s]Scanning images:  73%|███████▎  | 4466/6152 [00:03<00:01, 1298.20it/s]Scanning images:  75%|███████▍  | 4596/6152 [00:03<00:01, 1266.44it/s]Scanning images:  77%|███████▋  | 4723/6152 [00:03<00:01, 1217.07it/s]Scanning images:  79%|███████▉  | 4846/6152 [00:03<00:01, 1164.24it/s]Scanning images:  81%|████████  | 4964/6152 [00:03<00:01, 1129.52it/s]Scanning images:  83%|████████▎ | 5078/6152 [00:04<00:00, 1089.74it/s]Scanning images:  84%|████████▍ | 5188/6152 [00:04<00:00, 1052.83it/s]Scanning images:  86%|████████▌ | 5294/6152 [00:04<00:00, 1025.29it/s]Scanning images:  88%|████████▊ | 5397/6152 [00:04<00:00, 1011.02it/s]Scanning images:  89%|████████▉ | 5499/6152 [00:04<00:00, 1000.26it/s]Scanning images:  91%|█████████ | 5600/6152 [00:04<00:00, 996.84it/s] Scanning images:  93%|█████████▎| 5700/6152 [00:04<00:00, 990.80it/s]Scanning images:  94%|█████████▍| 5800/6152 [00:04<00:00, 990.21it/s]Scanning images:  96%|█████████▌| 5900/6152 [00:04<00:00, 987.19it/s]Scanning images:  98%|█████████▊| 6000/6152 [00:05<00:00, 989.10it/s]Scanning images:  99%|█████████▉| 6100/6152 [00:05<00:00, 991.40it/s]Scanning images: 100%|██████████| 6152/6152 [00:05<00:00, 1186.30it/s]
+
+📊 Collected 520 crops for embedding extraction
+⚡ Extracting embeddings with GPU batch processing (batch_size=32)...
+Extracting embeddings:   0%|          | 0/17 [00:00<?, ?it/s]/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/populate_milvus_embeddings.py:251: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Autotune Choices Stats:
+{"num_choices": 15, "num_triton_choices": 14, "best_kernel": "triton_mm_595", "best_kernel_desc": "ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=32, BLOCK_N=64, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=8", "best_time": 0.0035520000383257866, "best_triton_pos": 0}
+AUTOTUNE mm(32x112, 112x512)
+strides: [112, 1], [1, 112]
+dtypes: torch.float16, torch.float16
+  triton_mm_595 0.0036 ms 100.0% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=32, BLOCK_N=64, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=8
+  mm 0.0037 ms 94.9% 
+  triton_mm_600 0.0037 ms 94.9% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=64, BLOCK_M=32, BLOCK_N=64, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=3, num_warps=8
+  triton_mm_596 0.0041 ms 87.4% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=32, BLOCK_N=32, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_605 0.0041 ms 87.4% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=32, BLOCK_N=64, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=4, num_warps=8
+  triton_mm_594 0.0041 ms 86.7% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=128, BLOCK_M=32, BLOCK_N=32, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=2, num_warps=4
+  triton_mm_597 0.0041 ms 86.7% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=128, BLOCK_M=32, BLOCK_N=32, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_601 0.0041 ms 86.7% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=32, BLOCK_N=128, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_602 0.0041 ms 86.7% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=32, BLOCK_N=128, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=4, num_warps=8
+  triton_mm_603 0.0041 ms 86.7% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=64, BLOCK_M=32, BLOCK_N=128, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+SingleProcess AUTOTUNE benchmarking takes 0.3414 seconds and 0.0001 seconds precompiling for 15 choices
+Autotune Choices Stats:
+{"num_choices": 15, "num_triton_choices": 14, "best_kernel": "triton_mm_611", "best_kernel_desc": "ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=128, BLOCK_M=32, BLOCK_N=32, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=4", "best_time": 0.004095999989658594, "best_triton_pos": 0}
+AUTOTUNE mm(32x512, 512x128)
+strides: [512, 1], [1, 512]
+dtypes: torch.float16, torch.float16
+  triton_mm_611 0.0041 ms 100.0% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=128, BLOCK_M=32, BLOCK_N=32, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_614 0.0054 ms 76.2% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=64, BLOCK_M=32, BLOCK_N=64, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=3, num_warps=8
+  mm 0.0056 ms 72.7% 
+  triton_mm_608 0.0059 ms 69.9% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=128, BLOCK_M=32, BLOCK_N=32, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=2, num_warps=4
+  triton_mm_619 0.0061 ms 67.0% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=32, BLOCK_N=64, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=4, num_warps=8
+  triton_mm_609 0.0061 ms 66.7% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=32, BLOCK_N=64, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=8
+  triton_mm_610 0.0061 ms 66.7% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=32, BLOCK_N=32, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_617 0.0070 ms 58.7% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=64, BLOCK_M=32, BLOCK_N=128, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_618 0.0070 ms 58.2% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=32, BLOCK_N=64, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_616 0.0074 ms 55.7% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=32, BLOCK_N=128, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=4, num_warps=8
+SingleProcess AUTOTUNE benchmarking takes 0.2872 seconds and 0.0001 seconds precompiling for 15 choices
+Extracting embeddings:   6%|▌         | 1/17 [00:28<07:35, 28.48s/it]/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/populate_milvus_embeddings.py:251: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/populate_milvus_embeddings.py:251: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Extracting embeddings:  29%|██▉       | 5/17 [00:28<00:51,  4.27s/it]Extracting embeddings:  53%|█████▎    | 9/17 [00:28<00:15,  1.94s/it]Extracting embeddings:  76%|███████▋  | 13/17 [00:28<00:04,  1.10s/it]Autotune Choices Stats:
+{"num_choices": 16, "num_triton_choices": 15, "best_kernel": "triton_mm_872", "best_kernel_desc": "ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=64, BLOCK_M=16, BLOCK_N=128, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=3, num_warps=4", "best_time": 0.003103999886661768, "best_triton_pos": 0}
+AUTOTUNE mm(8x112, 112x512)
+strides: [112, 1], [1, 112]
+dtypes: torch.float16, torch.float16
+  triton_mm_872 0.0031 ms 100.0% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=64, BLOCK_M=16, BLOCK_N=128, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_863 0.0034 ms 91.5% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=2, num_warps=2
+  triton_mm_870 0.0034 ms 91.5% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=16, BLOCK_N=128, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_874 0.0034 ms 91.5% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=4, num_warps=4
+  triton_mm_876 0.0034 ms 91.5% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=64, BLOCK_M=16, BLOCK_N=128, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=8
+  mm 0.0034 ms 90.7% 
+  triton_mm_871 0.0035 ms 89.8% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=16, BLOCK_N=128, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=4, num_warps=8
+  triton_mm_864 0.0041 ms 76.4% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_865 0.0041 ms 76.4% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=16, BLOCK_N=32, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  triton_mm_866 0.0041 ms 76.4% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=False, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+SingleProcess AUTOTUNE benchmarking takes 0.2748 seconds and 0.0001 seconds precompiling for 16 choices
+Autotune Choices Stats:
+{"num_choices": 16, "num_triton_choices": 15, "best_kernel": "triton_mm_881", "best_kernel_desc": "ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=2", "best_time": 0.00342399999499321, "best_triton_pos": 0}
+AUTOTUNE mm(8x512, 512x128)
+strides: [512, 1], [1, 512]
+dtypes: torch.float16, torch.float16
+  triton_mm_881 0.0034 ms 100.0% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  triton_mm_880 0.0040 ms 84.9% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  mm 0.0042 ms 81.1% 
+  triton_mm_878 0.0054 ms 62.9% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=2, num_warps=2
+  triton_mm_879 0.0054 ms 62.9% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_884 0.0054 ms 62.9% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=64, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_887 0.0055 ms 62.6% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=64, BLOCK_M=16, BLOCK_N=128, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_886 0.0057 ms 60.1% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=16, BLOCK_N=128, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=4, num_warps=8
+  triton_mm_891 0.0061 ms 56.0% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=64, BLOCK_M=16, BLOCK_N=128, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=5, num_warps=8
+  triton_mm_889 0.0061 ms 55.7% ACC_TYPE='tl.float32', ALLOW_TF32=True, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, USE_FAST_ACCUM=False, num_stages=4, num_warps=4
+SingleProcess AUTOTUNE benchmarking takes 0.2883 seconds and 0.0001 seconds precompiling for 16 choices
+Extracting embeddings:  76%|███████▋  | 13/17 [00:44<00:04,  1.10s/it]Extracting embeddings: 100%|██████████| 17/17 [00:53<00:00,  3.04s/it]Extracting embeddings: 100%|██████████| 17/17 [00:53<00:00,  3.14s/it]
+/home/currycareation/.local/lib/python3.12/site-packages/milvus_lite/__init__.py:15: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+
+📂 Organizing 520 embeddings by class...
+
+================================================================================
+📊 Embedding Extraction Statistics (Production)
+================================================================================
+Class ID   Class Name                               Templates    Status    
+------------------------------------------------------------------------
+0          Barg-sBlack-20Oz                         10           ✅         
+1          Bueno-shareSize                          10           ✅         
+2          Cheetos-Crunchy                          10           ✅         
+3          Cheetos-Crunchy-Flamin-Hot               10           ✅         
+4          Cheetos-Puffs                            0            ⚠️        
+5          Cheetos-crunchy-Flamin-Hot-Limon         0            ⚠️        
+6          Cheetos-crunchy-XXTRA-Flamin-Hot         10           ✅         
+7          Cherry-Coca-cola 20Oz                    10           ✅         
+8          CherryVanilla-Coca-cola 20Oz             10           ✅         
+9          Chips-Ahoy                               10           ✅         
+10         Chips-Ahoy-KingSize                      10           ✅         
+11         Coca-cola 20Oz                           10           ✅         
+12         CocaCola-16Oz                            10           ✅         
+13         Crunch                                   10           ✅         
+14         Crush-16Oz                               10           ✅         
+15         DORITOS-Cool-Ranch                       0            ⚠️        
+16         DORITOS-Nacho-Cheese                     0            ⚠️        
+17         DORITOS-Spicy-Nacho                      10           ✅         
+18         DietCoca-cola 20Oz                       10           ✅         
+19         Dr.Papper-1L                             10           ✅         
+20         Dr.Papper-Can16oz                        10           ✅         
+21         Fanta-Can16oz                            10           ✅         
+22         Fanta-Grape-20Oz                         10           ✅         
+23         Fanta20Oz                                10           ✅         
+24         FantaZero20Oz                            10           ✅         
+25         Funyuns-Onion-flavored-rings-Flamin-hot  10           ✅         
+26         Lay-s-Barbecue                           0            ⚠️        
+27         Lay-s-Classic                            0            ⚠️        
+28         Lay-s-Limon                              0            ⚠️        
+29         Lenny-Larry-s-BirthdayCake               10           ✅         
+30         Lenny-Larry-s-ChocolateChips             10           ✅         
+31         Lenny-Larry-s-DoubleChocolateChips       10           ✅         
+32         Lenny-Larry-s-PeanutButter               10           ✅         
+33         Lenny-Larry-s-PeanutButter-ChocolateChips 10           ✅         
+34         Lenny-Larry-s-Snickerdoodle              10           ✅         
+35         MinuteMaid-FruitPunch                    10           ✅         
+36         MinuteMaid-PinkLemonade                  10           ✅         
+37         MinuteMaidBlueRaspberry-20Oz             10           ✅         
+38         MinuteMaidLemonade-20Oz                  10           ✅         
+39         MtnDew-16Oz                              10           ✅         
+40         Nerds-shareSize                          10           ✅         
+41         Oreo                                     10           ✅         
+42         Oreo-DoubleStuf-KingSize                 10           ✅         
+43         Oreo-KingSize                            10           ✅         
+44         PayDay-shareSize                         10           ✅         
+45         Skittles-shareSize                       10           ✅         
+46         SourPunch-shareSize                      10           ✅         
+47         Spiced-Coca-cola 20Oz                    10           ✅         
+48         Sprite-Can16oz                           10           ✅         
+49         Sprite-Cherry-20Oz                       10           ✅         
+50         Sprite-TropicalMix-20Oz                  10           ✅         
+51         Sprite-Zero-20Oz                         10           ✅         
+52         Sprite20Oz                               10           ✅         
+53         Sprite40Oz                               10           ✅         
+54         Vanilla-Coca-cola 20Oz                   10           ✅         
+55         Whatchamacallit-kingSize                 10           ✅         
+56         dietCoke-Can16oz                         10           ✅         
+57         skittles-smoothies-shareSize             10           ✅         
+58         zeroCocaCola-16Oz                        10           ✅         
+------------------------------------------------------------------------
+TOTAL                                               520         
+================================================================================
+
+💾 Saving embedding cache to: experiment_results/embedding_cache.pkl
+✅ Embedding cache saved (0.27 MB)
+
+🗄️  Initializing Production Milvus Database...
+
+================================================================================
+Setting up Milvus Vector Database for Production
+================================================================================
+
+✅ Found existing Milvus database: experiment_results/milvus_retail_enhanced.db
+
+✅ Milvus setup complete
+
+✅ Connected to Milvus database: experiment_results/milvus_retail_enhanced.db
+🗑️  Dropping existing collection: retail_items
+📊 Creating production collection: retail_items
+✅ Collection 'retail_items' created successfully
+   Embedding dimension: 128
+   Index type: FLAT
+   Metric type: COSINE
+
+📋 Preparing embeddings for batch insertion...
+
+📥 Inserting 520 embeddings into Milvus...
+   Batch size: 1000
+Inserting batches:   0%|          | 0/1 [00:00<?, ?it/s]Inserting batches: 100%|██████████| 1/1 [00:00<00:00, 68.21it/s]
+💾 Flushing data to disk...
+
+✅ Successfully inserted 520 embeddings
+   Collection stats: {'row_count': 520}
+
+
+================================================================================
+✅ MILVUS DATABASE POPULATION COMPLETE
+================================================================================
+📊 Database: experiment_results/milvus_retail_enhanced.db
+📦 Collection: retail_items
+🔢 Total embeddings: 520
+🏷️  Total classes: 59
+📈 Collection stats: {'row_count': 520}
+🎯 Ready for production similarity search!
+================================================================================
+
+✅ Milvus connection closed
+🧹 GPU memory cleaned up
+
+✅ Using existing YOLOv8 model: scripts/yolov8m.pt
+✅ Using existing YOLOv11 model: scripts/yolo11m.pt
+
+================================================================================
+Running Experiment: YOLOv8_Baseline_488_Classes
+================================================================================
+
+Evaluating YOLO baseline model...
+Ultralytics 8.3.221 🚀 Python-3.12.3 torch-2.9.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080, 15832MiB)
+YOLOv8m summary (fused): 92 layers, 25,886,080 parameters, 0 gradients, 78.9 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 7406.8±1093.9 MB/s, size: 73.2 KB)
+[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 112.9Mit/s 0.0s[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 13.1Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 5% ╸─────────── 1/19 2.6it/s 0.1s<7.0s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 11% ━─────────── 2/19 3.9it/s 0.3s<4.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 16% ━╸────────── 3/19 4.5it/s 0.4s<3.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 21% ━━╸───────── 4/19 5.8it/s 0.5s<2.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 32% ━━━╸──────── 6/19 7.9it/s 0.7s<1.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 8/19 9.6it/s 0.8s<1.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 53% ━━━━━━────── 10/19 10.3it/s 1.0s<0.9s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 63% ━━━━━━━╸──── 12/19 11.2it/s 1.2s<0.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 74% ━━━━━━━━╸─── 14/19 11.8it/s 1.3s<0.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 84% ━━━━━━━━━━── 16/19 12.5it/s 1.5s<0.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 95% ━━━━━━━━━━━─ 18/19 12.4it/s 1.6s<0.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 11.4it/s 1.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 11.4it/s 1.7s
+                   all        296        499    0.00678     0.0617    0.00681    0.00509
+Speed: 0.9ms preprocess, 3.7ms inference, 0.0ms loss, 0.3ms postprocess per image
+Results saved to [1m/home/currycareation/Desktop/yolo_embeding_malvious_repo/runs/detect/val55[0m
+
+Results for YOLOv8_Baseline_488_Classes:
+  mAP@0.5: 0.0068
+  Precision: 0.0068
+  Recall: 0.0617
+  F1-Score: 0.0122
+  Inference Time: 3.66 ms
+  FPS: 272.93
+
+================================================================================
+Running Experiment: YOLOv11_Baseline_488_Classes
+================================================================================
+
+Evaluating YOLO baseline model...
+Ultralytics 8.3.221 🚀 Python-3.12.3 torch-2.9.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080, 15832MiB)
+YOLO11m summary (fused): 125 layers, 20,091,712 parameters, 0 gradients, 68.0 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 4982.6±1753.9 MB/s, size: 76.8 KB)
+[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 124.2Mit/s 0.0s[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 9.6Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 5% ╸─────────── 1/19 1.8it/s 0.2s<10.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 11% ━─────────── 2/19 2.7it/s 0.4s<6.3s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 16% ━╸────────── 3/19 3.7it/s 0.5s<4.3s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 21% ━━╸───────── 4/19 4.9it/s 0.7s<3.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 32% ━━━╸──────── 6/19 7.1it/s 0.8s<1.8s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 8/19 8.9it/s 1.0s<1.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 53% ━━━━━━────── 10/19 9.8it/s 1.2s<0.9s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 63% ━━━━━━━╸──── 12/19 10.9it/s 1.3s<0.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 74% ━━━━━━━━╸─── 14/19 11.6it/s 1.5s<0.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 84% ━━━━━━━━━━── 16/19 12.3it/s 1.6s<0.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 95% ━━━━━━━━━━━─ 18/19 12.2it/s 1.8s<0.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 10.6it/s 1.8s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 10.6it/s 1.8s
+                   all        296        499    0.00478     0.0485    0.00626    0.00405
+Speed: 1.2ms preprocess, 3.8ms inference, 0.0ms loss, 0.3ms postprocess per image
+Results saved to [1m/home/currycareation/Desktop/yolo_embeding_malvious_repo/runs/detect/val56[0m
+/home/currycareation/.local/lib/python3.12/site-packages/torch/backends/__init__.py:46: UserWarning: Please use the new API settings to control TF32 behavior, such as torch.backends.cudnn.conv.fp32_precision = 'tf32' or torch.backends.cuda.matmul.fp32_precision = 'ieee'. Old settings, e.g, torch.backends.cuda.matmul.allow_tf32 = True, torch.backends.cudnn.allow_tf32 = True, allowTF32CuDNN() and allowTF32CuBLAS() will be deprecated after Pytorch 2.9. Please see https://pytorch.org/docs/main/notes/cuda.html#tensorfloat-32-tf32-on-ampere-and-later-devices (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:80.)
+  self.setter(val)
+/home/currycareation/.local/lib/python3.12/site-packages/milvus_lite/__init__.py:15: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:331: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:281: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:331: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+
+Results for YOLOv11_Baseline_488_Classes:
+  mAP@0.5: 0.0063
+  Precision: 0.0048
+  Recall: 0.0485
+  F1-Score: 0.0087
+  Inference Time: 3.82 ms
+  FPS: 261.89
+
+================================================================================
+Running Experiment: YOLOv8_DOLG_Milvus_Hybrid
+================================================================================
+
+📦 Using ImageNet pretrained DOLG embeddings
+✅ Loading DOLG weights from: dolg_retail_model/dolg_retail_best.pth
+   📦 Loading retail-trained model (epoch 34, val_acc: 64.68%)
+✅ DOLG Extractor initialized on cuda:0
+   Batch size: 32
+   Mixed precision: True
+✅ Connected to Milvus database: experiment_results/milvus_retail_enhanced.db
+🔥 Warming up GPU for optimal performance...
+✅ GPU warmed up
+✅ Hybrid detector ready for production inference
+Evaluating hybrid model...
+✅ Milvus connection closed
+
+Results for YOLOv8_DOLG_Milvus_Hybrid:
+  mAP@0.5: 0.0556
+  Precision: 0.0702
+  Recall: 0.1042
+  F1-Score: 0.0839
+  Inference Time: 5.33 ms
+  FPS: 187.70
+  Milvus Hit Rate: 100.00%
+
+================================================================================
+Running Experiment: YOLOv8_DOLG_Milvus_HighThreshold
+================================================================================
+
+📦 Using ImageNet pretrained DOLG embeddings
+✅ Loading DOLG weights from: dolg_retail_model/dolg_retail_best.pth
+   📦 Loading retail-trained model (epoch 34, val_acc: 64.68%)
+✅ DOLG Extractor initialized on cuda:0
+   Batch size: 32
+   Mixed precision: True
+✅ Connected to Milvus database: experiment_results/milvus_retail_enhanced.db
+🔥 Warming up GPU for optimal performance...
+✅ GPU warmed up
+✅ Hybrid detector ready for production inference
+Evaluating hybrid model...
+✅ Milvus connection closed
+
+Results for YOLOv8_DOLG_Milvus_HighThreshold:
+  mAP@0.5: 0.0535
+  Precision: 0.0526
+  Recall: 0.0782
+  F1-Score: 0.0629
+  Inference Time: 5.31 ms
+  FPS: 188.29
+  Milvus Hit Rate: 26.05%
+
+====================================================================================================
+EXPERIMENT COMPARISON REPORT
+====================================================================================================
+
+Experiment                                  mAP@0.5  Precision     Recall         F1        FPS     Milvus
+----------------------------------------------------------------------------------------------------
+YOLOv8_Baseline_488_Classes                  0.0068     0.0068     0.0617     0.0122     272.93        N/A
+YOLOv11_Baseline_488_Classes                 0.0063     0.0048     0.0485     0.0087     261.89        N/A
+YOLOv8_DOLG_Milvus_Hybrid                    0.0556     0.0702     0.1042     0.0839     187.70      100.0
+YOLOv8_DOLG_Milvus_HighThreshold             0.0535     0.0526     0.0782     0.0629     188.29       26.0
+
+====================================================================================================
+
+Comparison report saved to: experiment_comparison.json
+
+✅ All experiments completed successfully!
+📊 View results in MLflow UI: mlflow ui --backend-store-uri file:./mlruns
+
+################################################################################
+# RETAIL ITEM DETECTION - COMPLETE EXPERIMENTAL PIPELINE
+################################################################################
+
+
+⏭️  Skipping YOLOv8 training (train_yolov8: false)
+
+⏭️  Skipping YOLOv11 training (train_yolov11: false)
+
+📋 Model Summary:
+   YOLOv8: scripts/yolov8m.pt
+   YOLOv11: scripts/yolo11m.pt
+
+
+================================================================================
+Populating Milvus Database with DOLG Embeddings
+================================================================================
+
+
+✅ Milvus database populated: experiment_results/milvus_retail_enhanced.db
+
+================================================================================
+Running Comparative Experiments
+================================================================================
+
+
+================================================================================
+Generating Visualization Reports
+================================================================================
+
+✅ Saved: experiment_results/visualizations/detection_performance.png
+✅ Saved: experiment_results/visualizations/speed_performance.png
+✅ Saved: experiment_results/visualizations/milvus_analysis.png
+✅ Saved: experiment_results/visualizations/summary_table.png
+✅ Saved: experiment_results/visualizations/results_summary.csv
+
+📊 All visualizations saved to: experiment_results/visualizations
+
+================================================================================
+Generating Comprehensive Report
+================================================================================
+
+✅ Report saved to: experiment_results/EXPERIMENT_REPORT.md
+
+################################################################################
+# PIPELINE COMPLETE!
+################################################################################
+
+📁 Results directory: experiment_results
+📊 View MLflow UI: mlflow ui --backend-store-uri file:./mlruns

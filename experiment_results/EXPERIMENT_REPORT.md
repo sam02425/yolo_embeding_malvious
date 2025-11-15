@@ -1,12 +1,12 @@
 # Retail Item Detection - Experiment Comparison Report
 
-Generated: 2025-11-14 23:08:27
+Generated: 2025-11-15 02:40:54
 
 ## Executive Summary
 
 - **Best mAP@0.5**: YOLOv8_Baseline_488_Classes (0.9414)
 - **Best F1-Score**: YOLOv11_Baseline_488_Classes (0.9175)
-- **Fastest**: YOLOv8_Baseline_488_Classes (276.03 FPS)
+- **Fastest**: YOLOv8_Baseline_488_Classes (264.31 FPS)
 
 ## Experiment Configuration
 
@@ -28,10 +28,10 @@ Generated: 2025-11-14 23:08:27
 - F1-Score: 0.9013
 
 **Speed Metrics:**
-- Inference Time: 3.62 ms
-- FPS: 276.03
-- Preprocess Time: 0.84 ms
-- Postprocess Time: 0.20 ms
+- Inference Time: 3.78 ms
+- FPS: 264.31
+- Preprocess Time: 0.86 ms
+- Postprocess Time: 0.19 ms
 
 ---
 
@@ -45,9 +45,9 @@ Generated: 2025-11-14 23:08:27
 - F1-Score: 0.9175
 
 **Speed Metrics:**
-- Inference Time: 3.71 ms
-- FPS: 269.25
-- Preprocess Time: 0.90 ms
+- Inference Time: 3.91 ms
+- FPS: 255.85
+- Preprocess Time: 0.87 ms
 - Postprocess Time: 0.21 ms
 
 ---
@@ -55,39 +55,44 @@ Generated: 2025-11-14 23:08:27
 ### YOLOv8_DOLG_Milvus_Hybrid
 
 **Detection Metrics:**
-- mAP@0.5: 0.0253
-- mAP@0.5:0.95: 0.0253
-- Precision: 0.0454
-- Recall: 0.0461
-- F1-Score: 0.0457
+- mAP@0.5: 0.1138
+- mAP@0.5:0.95: 0.1138
+- Precision: 0.1893
+- Recall: 0.1924
+- F1-Score: 0.1909
 
 **Speed Metrics:**
-- Inference Time: 5.42 ms
-- FPS: 184.43
+- Inference Time: 5.32 ms
+- FPS: 187.82
 - Preprocess Time: 0.00 ms
 - Postprocess Time: 0.00 ms
 
 **Milvus Integration:**
-- Hit Rate: 82.64%
-- Embedding Time: 54.72 ms
-- Search Time: 1.10 ms
+- Hit Rate: 12.23%
+- Embedding Time: 54.78 ms
+- Search Time: 1.06 ms
 
 ---
 
 ### YOLOv8_DOLG_Milvus_HighThreshold
 
 **Detection Metrics:**
-- mAP@0.5: 0.1124
-- mAP@0.5:0.95: 0.1124
-- Precision: 0.1874
-- Recall: 0.1904
-- F1-Score: 0.1889
+- mAP@0.5: 0.1138
+- mAP@0.5:0.95: 0.1138
+- Precision: 0.1893
+- Recall: 0.1924
+- F1-Score: 0.1909
 
 **Speed Metrics:**
-- Inference Time: 5.39 ms
-- FPS: 185.58
+- Inference Time: 5.31 ms
+- FPS: 188.23
 - Preprocess Time: 0.00 ms
 - Postprocess Time: 0.00 ms
+
+**Milvus Integration:**
+- Hit Rate: 12.23%
+- Embedding Time: 4.84 ms
+- Search Time: 1.11 ms
 
 ---
 
