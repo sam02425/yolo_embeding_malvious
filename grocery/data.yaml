@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 59
+names: ['Barg-sBlack-20Oz', 'Bueno-shareSize', 'Cheetos-Crunchy', 'Cheetos-Crunchy-Flamin-Hot', 'Cheetos-Puffs', 'Cheetos-crunchy-Flamin-Hot-Limon', 'Cheetos-crunchy-XXTRA-Flamin-Hot', 'Cherry-Coca-cola 20Oz', 'CherryVanilla-Coca-cola 20Oz', 'Chips-Ahoy', 'Chips-Ahoy-KingSize', 'Coca-cola 20Oz', 'CocaCola-16Oz', 'Crunch', 'Crush-16Oz', 'DORITOS-Cool-Ranch', 'DORITOS-Nacho-Cheese', 'DORITOS-Spicy-Nacho', 'DietCoca-cola 20Oz', 'Dr.Papper-1L', 'Dr.Papper-Can16oz', 'Fanta-Can16oz', 'Fanta-Grape-20Oz', 'Fanta20Oz', 'FantaZero20Oz', 'Funyuns-Onion-flavored-rings-Flamin-hot', 'Lay-s-Barbecue', 'Lay-s-Classic', 'Lay-s-Limon', 'Lenny-Larry-s-BirthdayCake', 'Lenny-Larry-s-ChocolateChips', 'Lenny-Larry-s-DoubleChocolateChips', 'Lenny-Larry-s-PeanutButter', 'Lenny-Larry-s-PeanutButter-ChocolateChips', 'Lenny-Larry-s-Snickerdoodle', 'MinuteMaid-FruitPunch', 'MinuteMaid-PinkLemonade', 'MinuteMaidBlueRaspberry-20Oz', 'MinuteMaidLemonade-20Oz', 'MtnDew-16Oz', 'Nerds-shareSize', 'Oreo', 'Oreo-DoubleStuf-KingSize', 'Oreo-KingSize', 'PayDay-shareSize', 'Skittles-shareSize', 'SourPunch-shareSize', 'Spiced-Coca-cola 20Oz', 'Sprite-Can16oz', 'Sprite-Cherry-20Oz', 'Sprite-TropicalMix-20Oz', 'Sprite-Zero-20Oz', 'Sprite20Oz', 'Sprite40Oz', 'Vanilla-Coca-cola 20Oz', 'Whatchamacallit-kingSize', 'dietCoke-Can16oz', 'skittles-smoothies-shareSize', 'zeroCocaCola-16Oz']
+
+roboflow:
+  workspace: lamar-university-venef
+  project: grocery-rfn8l
+  version: 3
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/lamar-university-venef/grocery-rfn8l/dataset/3

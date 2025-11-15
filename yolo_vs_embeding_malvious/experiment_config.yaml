@@ -1,97 +1,47 @@
-# Retail Item Detection Experiment Configuration
-# Production-Grade Settings with GPU Optimization
-
-# Output directory for all results
-results_dir: './experiment_results'
-
-# Training Configuration
+results_dir: ./experiment_results
 training:
   # Dataset YAML path (YOLO format)
-  dataset_yaml: 'data/retail_488.yaml'
-  
-  # Base model weights (download automatically if not present)
-  yolov8_base: 'yolov8m.pt'      # Options: yolov8n.pt, yolov8s.pt, yolov8m.pt, yolov8l.pt, yolov8x.pt
-  yolov11_base: 'yolo11m.pt'     # Options: yolo11n.pt, yolo11s.pt, yolo11m.pt, yolo11l.pt, yolo11x.pt
-  
-  # Pretrained model paths (use these instead of training if available)
-  yolov8_pretrained: 'models/yolov8_488_classes_best.pt'   # Path to pretrained YOLOv8 model (set to null or '' to train from scratch)
-  yolov11_pretrained: 'models/yolov11_488_classes_best.pt' # Path to pretrained YOLOv11 model (set to null or '' to train from scratch)
-  
-  # Training flags
-  train_yolov8: true              # Set false to skip YOLOv8 training completely
-  train_yolov11: true             # Set false to skip YOLOv11 training completely
-  force_retrain: false            # Set true to force retraining even if pretrained models exist
-  use_tuning: false               # Use hyperparameter tuning instead of standard training
-  
-  # Training hyperparameters
-  epochs: 100                     # Training epochs (standard training)
-  tuning_epochs: 50               # Epochs per tuning iteration
-  tuning_iterations: 30           # Number of hyperparameter evolution iterations
-  imgsz: 640                      # Image size (640, 416, 1280)
-  batch_size: 16                  # Batch size (adjust based on GPU memory - 16 for 8GB, 32 for 16GB)
-  
-  # GPU Configuration (PRODUCTION CRITICAL)
-  device: 'cuda:0'                # Device: 'cuda:0', 'cuda:1', etc. GPU REQUIRED for production
-  workers: 8                      # DataLoader workers (set to num CPU cores for optimal speed)
-  use_amp: true                   # Use Automatic Mixed Precision for faster training (recommended)
-  
-  # MLflow experiment tracking
-  mlflow_uri: 'file:./mlruns'     # MLflow tracking URI
-
-# DOLG Embedding & Milvus Configuration (PRODUCTION CRITICAL)
+  dataset_yaml: 'data/grocery_augmented/grocery_augmented.yaml'
+  yolov8_base: yolov8m.pt
+  yolov11_base: yolo11m.pt
+  yolov8_pretrained: grocery/runs/yolov8_grocery_baseline_20251114_194239/weights/best.pt
+  yolov11_pretrained: grocery/runs/yolo11_grocery_baseline_20251114_1953262/weights/best.pt
+  train_yolov8: true
+  train_yolov11: true
+  force_retrain: false
+  use_tuning: false
+  epochs: 100
+  tuning_epochs: 50
+  tuning_iterations: 30
+  imgsz: 640
+  batch_size: 16
+  device: cuda:0
+  workers: 8
+  use_amp: true
+  mlflow_uri: file:./mlruns
 milvus:
-  # DOLG model path (will use EfficientNet if doesn't exist)
-  dolg_model_path: 'dolg_model.pth'
-  
-  # Milvus database settings
-  db_name: 'milvus_retail.db'
-  collection_name: 'retail_items'
-  
-  # Embedding extraction settings (GPU-accelerated)
-  max_templates_per_class: 10     # Max template embeddings per class (10-20 recommended)
-  batch_size: 32                  # Batch size for GPU embedding extraction (32 for 8GB, 64 for 16GB)
-  use_amp: true                   # Use mixed precision for embedding extraction (faster)
-  
-  # Auto-setup (automatically download and configure Milvus)
-  auto_setup: true                # Automatically set up Milvus database
-
-# Experiment Configuration
+  dolg_model_path: dolg_model.pth
+  db_name: milvus_retail.db
+  collection_name: retail_items
+  max_templates_per_class: 10
+  batch_size: 32
+  use_amp: true
+  auto_setup: true
 experiments:
-  run_all: true                   # Run all experiments (baseline + hybrid)
-  baseline_only: false            # Run only baseline experiments (no Milvus)
-  use_milvus: true                # Include Milvus-based experiments
-  
-  # Similarity threshold for Milvus matching
-  similarity_threshold: 0.5       # Range: 0.0-1.0 (higher = stricter matching)
-  
-  # GPU settings for inference
-  device: 'cuda:0'                # GPU device for experiments (REQUIRED for production)
-  batch_inference: true           # Use batch inference for better GPU utilization
-
-# Advanced Options (Production Tuning)
+  run_all: true
+  baseline_only: false
+  use_milvus: true
+  similarity_threshold: 0.15  # Lowered from 0.7 to match COSINE distances (0.12-0.20 range)
+  device: cuda:0
+  batch_inference: true
 advanced:
-  # Embedding cache
   use_embedding_cache: true
-  embedding_cache_path: 'embedding_cache.pkl'
-  
-  # Visualization settings
+  embedding_cache_path: embedding_cache.pkl
   generate_visualizations: true
   generate_report: true
-  
-  # Evaluation settings
-  iou_threshold: 0.5              # IoU threshold for detection matching
-  conf_threshold: 0.25            # Confidence threshold for YOLO
-  
-  # Performance settings (GPU optimization)
-  pin_memory: true                # Pin memory for faster data transfer to GPU
-  persistent_workers: true        # Keep DataLoader workers alive between epochs
-  cudnn_benchmark: true           # Enable cuDNN autotuner for faster convolutions
-  tf32: true                      # Enable TF32 on Ampere GPUs (A100, RTX 30xx/40xx)
-
-# Production Notes:
-# 1. GPU is REQUIRED - CPU mode is not supported for production
-# 2. Batch sizes: 8GB GPU → 16-32, 16GB GPU → 32-64, 24GB+ GPU → 64-128
-# 3. use_amp=true provides 2-3x speedup with minimal accuracy impact
-# 4. workers=8 is optimal for most systems (adjust to CPU core count)
-# 5. tf32=true gives free speedup on Ampere and newer GPUs
-# 6. For multi-GPU: use device='0,1,2,3' and scale batch_size accordingly
+  iou_threshold: 0.25  # Lowered from 0.5 to match dataset bbox annotation quality
+  conf_threshold: 0.25
+  pin_memory: true
+  persistent_workers: true
+  cudnn_benchmark: true
+  tf32: true

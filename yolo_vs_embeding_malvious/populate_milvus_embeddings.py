@@ -19,6 +19,7 @@ import cv2
 import numpy as np
 import torch
 from tqdm import tqdm
+import random
 
 # Ensure required packages
 try:
@@ -391,10 +392,39 @@ class MilvusPopulator:
             print(f"⚠️  Error closing Milvus: {e}")
 
 
-def extract_class_embeddings(dataset_yaml: str, 
+def augment_template_crop(crop: np.ndarray) -> np.ndarray:
+    """Apply lightweight brightness/pose transforms to simulate new viewpoints."""
+    aug = crop.astype(np.float32)
+    # Random horizontal flip
+    if random.random() < 0.5:
+        aug = cv2.flip(aug, 1)
+    # Brightness/contrast jitter
+    brightness = 1.0 + random.uniform(-0.25, 0.25)
+    contrast = 1.0 + random.uniform(-0.15, 0.15)
+    aug = np.clip((aug - 127.5) * contrast + 127.5, 0, 255)
+    aug = np.clip(aug * brightness + random.uniform(-8, 8), 0, 255)
+    # Subtle rotation/perspective
+    if random.random() < 0.4:
+        angle = random.uniform(-8, 8)
+        h, w = aug.shape[:2]
+        M = cv2.getRotationMatrix2D((w / 2, h / 2), angle, 1.0)
+        aug = cv2.warpAffine(aug, M, (w, h), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT_101)
+    # Gaussian blur / noise
+    if random.random() < 0.3:
+        aug = cv2.GaussianBlur(aug, (3, 3), sigmaX=0.0)
+    if random.random() < 0.3:
+        noise = np.random.normal(0, random.uniform(0, 5), aug.shape)
+        aug = np.clip(aug + noise, 0, 255)
+    return aug.astype(np.uint8)
+
+
+def extract_class_embeddings(dataset_yaml: str,
                             embedding_extractor: DOLGEmbeddingExtractor,
                             max_templates_per_class: int = 10,
-                            batch_size: int = 32) -> Dict[int, List[np.ndarray]]:
+                            batch_size: int = 32,
+                            min_box_area: int = 0,
+                            template_augmentations: int = 0,
+                            skip_empty_labels: bool = True) -> Dict[int, List[np.ndarray]]:
     """
     Extract embeddings for each class from training dataset with GPU batch processing
     
@@ -403,6 +433,9 @@ def extract_class_embeddings(dataset_yaml: str,
         embedding_extractor: DOLG embedding extractor
         max_templates_per_class: Maximum number of template embeddings per class
         batch_size: Batch size for GPU processing
+        min_box_area: Minimum bounding box area (pixel^2) to keep a crop
+        template_augmentations: Number of augmented variants per crop
+        skip_empty_labels: Skip label files without annotations (filters backgrounds)
         
     Returns:
         Dictionary mapping class_id to list of embedding vectors
@@ -442,7 +475,12 @@ def extract_class_embeddings(dataset_yaml: str,
     print(f"{'='*80}\n")
     print(f"Number of classes: {len(class_names)}")
     print(f"Max templates per class: {max_templates_per_class}")
-    print(f"Batch size for GPU: {batch_size}\n")
+    print(f"Batch size for GPU: {batch_size}")
+    if min_box_area:
+        print(f"Min box area (px): {min_box_area}")
+    if template_augmentations:
+        print(f"Template augmentations per crop: {template_augmentations}")
+    print()
     
     # Find all label files
     labels_dir = train_dir / 'labels'
@@ -459,8 +497,16 @@ def extract_class_embeddings(dataset_yaml: str,
     print(f"Processing images from: {images_dir}\n")
     
     # Collect all crops first for batch processing
-    all_crops = []
-    crop_metadata = []
+    all_crops: List[np.ndarray] = []
+    crop_metadata: List[Dict[str, int]] = []
+
+    def append_template(crop_img: np.ndarray, class_id: int) -> bool:
+        if class_counts[class_id] >= max_templates_per_class:
+            return False
+        all_crops.append(crop_img)
+        crop_metadata.append({'class_id': class_id})
+        class_counts[class_id] += 1
+        return True
     
     print("📦 Collecting image crops...")
     for label_file in tqdm(label_files, desc="Scanning images"):
@@ -480,43 +526,59 @@ def extract_class_embeddings(dataset_yaml: str,
         
         # Read labels
         with open(label_file, 'r') as f:
-            for line in f:
-                parts = line.strip().split()
-                if len(parts) < 5:
-                    continue
-                
-                class_id = int(parts[0])
-                
-                # Skip if we already have enough templates for this class
-                if class_counts[class_id] >= max_templates_per_class:
-                    continue
-                
-                # Parse bounding box (YOLO format: class x_center y_center width height)
-                x_center, y_center, width, height = map(float, parts[1:5])
-                
-                # Convert to pixel coordinates
-                x1 = int((x_center - width / 2) * w)
-                y1 = int((y_center - height / 2) * h)
-                x2 = int((x_center + width / 2) * w)
-                y2 = int((y_center + height / 2) * h)
-                
-                # Ensure valid crop
-                x1, y1 = max(0, x1), max(0, y1)
-                x2, y2 = min(w, x2), min(h, y2)
-                
-                if x2 <= x1 or y2 <= y1:
-                    continue
-                
-                # Crop item from image
-                crop = image[y1:y2, x1:x2]
-                
-                if crop.size == 0:
-                    continue
-                
-                # Store crop and metadata
-                all_crops.append(crop)
-                crop_metadata.append({'class_id': class_id})
-                class_counts[class_id] += 1
+            lines = [line.strip() for line in f if line.strip()]
+        
+        if not lines and skip_empty_labels:
+            continue
+        
+        for line in lines:
+            parts = line.split()
+            if len(parts) < 5:
+                continue
+            
+            class_id = int(parts[0])
+            
+            # Skip class IDs that don't exist in current dataset (handles old labels)
+            if class_id >= len(class_names):
+                continue
+            
+            # Skip if we already have enough templates for this class
+            if class_counts[class_id] >= max_templates_per_class:
+                continue
+            
+            # Parse bounding box (YOLO format: class x_center y_center width height)
+            x_center, y_center, width, height = map(float, parts[1:5])
+            
+            # Convert to pixel coordinates
+            x1 = int((x_center - width / 2) * w)
+            y1 = int((y_center - height / 2) * h)
+            x2 = int((x_center + width / 2) * w)
+            y2 = int((y_center + height / 2) * h)
+            
+            # Ensure valid crop
+            x1, y1 = max(0, x1), max(0, y1)
+            x2, y2 = min(w, x2), min(h, y2)
+            
+            if x2 <= x1 or y2 <= y1:
+                continue
+            
+            area = (x2 - x1) * (y2 - y1)
+            if min_box_area and area < min_box_area:
+                continue
+            
+            # Crop item from image
+            crop = image[y1:y2, x1:x2]
+            
+            if crop.size == 0:
+                continue
+            
+            added = append_template(crop, class_id)
+            if added and template_augmentations > 0:
+                for _ in range(template_augmentations):
+                    if class_counts[class_id] >= max_templates_per_class:
+                        break
+                    aug_crop = augment_template_crop(crop)
+                    append_template(aug_crop, class_id)
         
         # Check if we have enough templates for all classes
         if all(count >= max_templates_per_class for count in class_counts.values()):
@@ -589,7 +651,10 @@ def populate_milvus_from_dataset(dataset_yaml: str,
                                 device: str = "cuda:0",
                                 embedding_dim: int = 128,
                                 index_type: str = "FLAT",
-                                metric_type: str = "COSINE"):
+                                metric_type: str = "COSINE",
+                                template_augmentations: int = 0,
+                                min_box_area: int = 0,
+                                skip_empty_labels: bool = True):
     """
     Production-grade function to populate Milvus database with embeddings
     
@@ -606,6 +671,9 @@ def populate_milvus_from_dataset(dataset_yaml: str,
         embedding_dim: Dimensionality of DOLG embeddings
         index_type: Milvus index type (FLAT, IVF_FLAT, HNSW, ...)
         metric_type: Similarity metric (COSINE, IP, L2)
+        template_augmentations: Augmented variants to generate per crop
+        min_box_area: Minimum bounding box area to keep
+        skip_empty_labels: Skip empty label files (filters background-only images)
     """
     print("\n" + "🚀"*40)
     print("PRODUCTION-GRADE MILVUS POPULATION PIPELINE")
@@ -655,7 +723,10 @@ def populate_milvus_from_dataset(dataset_yaml: str,
             dataset_yaml=dataset_yaml,
             embedding_extractor=embedding_extractor,
             max_templates_per_class=max_templates_per_class,
-            batch_size=batch_size
+            batch_size=batch_size,
+            min_box_area=min_box_area,
+            template_augmentations=template_augmentations,
+            skip_empty_labels=skip_empty_labels
         )
         
         # Save cache if requested
@@ -685,7 +756,16 @@ def populate_milvus_from_dataset(dataset_yaml: str,
     print("\n📋 Preparing embeddings for batch insertion...")
     embeddings_to_insert = []
     
+    # Validate class IDs against dataset
+    num_classes = len(class_names)
+    skipped_classes = []
+    
     for class_id, embeddings in class_embeddings.items():
+        # Safety check: skip class IDs that don't exist in current dataset
+        if class_id >= num_classes:
+            skipped_classes.append(class_id)
+            continue
+        
         class_name = class_names[class_id]
         
         for template_idx, embedding in enumerate(embeddings):
@@ -696,6 +776,10 @@ def populate_milvus_from_dataset(dataset_yaml: str,
                 "template_idx": int(template_idx),
                 "embedding": embedding.tolist()
             })
+    
+    if skipped_classes:
+        print(f"⚠️  Skipped {len(skipped_classes)} classes with invalid IDs (from old cache): {sorted(skipped_classes)}")
+        print(f"   This is normal after fixing dataset YAML - cache will be regenerated")
     
     # Insert embeddings with production batch processing
     if embeddings_to_insert:
@@ -755,6 +839,13 @@ def main():
                        help="Milvus index type (FLAT, IVF_FLAT, HNSW, ...)")
     parser.add_argument("--metric-type", type=str, default="COSINE",
                        help="Similarity metric (COSINE, IP, L2)")
+    parser.add_argument("--template-augmentations", type=int, default=0,
+                       help="Number of augmented variants to generate per crop (improves template diversity)")
+    parser.add_argument("--min-box-area", type=int, default=0,
+                       help="Minimum bounding-box area (pixels^2) for a crop to be used as template")
+    parser.add_argument("--include-empty-labels", action="store_false", dest="skip_empty_labels",
+                       help="Include images with empty label files (default filters them out)")
+    parser.set_defaults(skip_empty_labels=True)
     
     args = parser.parse_args()
     
@@ -783,7 +874,10 @@ def main():
         device=args.device,
         embedding_dim=args.embedding_dim,
         index_type=args.index_type,
-        metric_type=args.metric_type
+        metric_type=args.metric_type,
+        template_augmentations=args.template_augmentations,
+        min_box_area=args.min_box_area,
+        skip_empty_labels=args.skip_empty_labels
     )
 
 

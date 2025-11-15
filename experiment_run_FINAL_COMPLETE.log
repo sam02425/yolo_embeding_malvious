@@ -1,0 +1,246 @@
+/home/currycareation/.local/lib/python3.12/site-packages/milvus_lite/__init__.py:15: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+
+🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
+PRODUCTION-GRADE MILVUS POPULATION PIPELINE
+🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
+
+🎮 GPU Device: NVIDIA GeForce RTX 5080
+💾 GPU Memory: 15.46 GB
+
+📦 Loading cached embeddings from: experiment_results/embedding_cache.pkl
+✅ Loaded cached embeddings (0.27 MB)
+
+🗄️  Initializing Production Milvus Database...
+
+================================================================================
+Setting up Milvus Vector Database for Production
+================================================================================
+
+✅ Found existing Milvus database: experiment_results/milvus_retail.db
+
+✅ Milvus setup complete
+
+✅ Connected to Milvus database: experiment_results/milvus_retail.db
+🗑️  Dropping existing collection: retail_items
+📊 Creating production collection: retail_items
+✅ Collection 'retail_items' created successfully
+   Embedding dimension: 128
+   Index type: FLAT
+   Metric type: COSINE
+
+📋 Preparing embeddings for batch insertion...
+
+📥 Inserting 520 embeddings into Milvus...
+   Batch size: 1000
+Inserting batches:   0%|          | 0/1 [00:00<?, ?it/s]Inserting batches: 100%|██████████| 1/1 [00:00<00:00, 60.92it/s]
+💾 Flushing data to disk...
+
+✅ Successfully inserted 520 embeddings
+   Collection stats: {'row_count': 520}
+
+
+================================================================================
+✅ MILVUS DATABASE POPULATION COMPLETE
+================================================================================
+📊 Database: experiment_results/milvus_retail.db
+📦 Collection: retail_items
+🔢 Total embeddings: 520
+🏷️  Total classes: 59
+📈 Collection stats: {'row_count': 520}
+🎯 Ready for production similarity search!
+================================================================================
+
+✅ Milvus connection closed
+🧹 GPU memory cleaned up
+
+✅ Using existing YOLOv8 model: grocery/runs/yolov8_grocery_baseline_20251114_194239/weights/best.pt
+✅ Using existing YOLOv11 model: grocery/runs/yolo11_grocery_baseline_20251114_1953262/weights/best.pt
+
+================================================================================
+Running Experiment: YOLOv8_Baseline_488_Classes
+================================================================================
+
+Evaluating YOLO baseline model...
+Ultralytics 8.3.221 🚀 Python-3.12.3 torch-2.9.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080, 15832MiB)
+Model summary (fused): 92 layers, 25,873,921 parameters, 0 gradients, 78.9 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 7058.2±1620.0 MB/s, size: 74.1 KB)
+[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 103.5Mit/s 0.0s[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 11.6Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 5% ╸─────────── 1/19 2.8it/s 0.1s<6.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 11% ━─────────── 2/19 4.3it/s 0.2s<4.0s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 16% ━╸────────── 3/19 4.6it/s 0.4s<3.5s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 21% ━━╸───────── 4/19 5.5it/s 0.5s<2.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 32% ━━━╸──────── 6/19 7.9it/s 0.7s<1.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 8/19 9.5it/s 0.8s<1.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 53% ━━━━━━────── 10/19 10.2it/s 1.0s<0.9s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 63% ━━━━━━━╸──── 12/19 11.2it/s 1.2s<0.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 74% ━━━━━━━━╸─── 14/19 11.9it/s 1.3s<0.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 84% ━━━━━━━━━━── 16/19 12.9it/s 1.4s<0.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 95% ━━━━━━━━━━━─ 18/19 12.8it/s 1.6s<0.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 11.6it/s 1.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 11.6it/s 1.6s
+                   all        296        499      0.872      0.933      0.941      0.861
+Speed: 0.9ms preprocess, 3.6ms inference, 0.0ms loss, 0.2ms postprocess per image
+Results saved to [1m/home/currycareation/Desktop/yolo_embeding_malvious_repo/runs/detect/val37[0m
+
+Results for YOLOv8_Baseline_488_Classes:
+  mAP@0.5: 0.9414
+  Precision: 0.8720
+  Recall: 0.9327
+  F1-Score: 0.9013
+  Inference Time: 3.65 ms
+  FPS: 274.33
+
+================================================================================
+Running Experiment: YOLOv11_Baseline_488_Classes
+================================================================================
+
+Evaluating YOLO baseline model...
+Ultralytics 8.3.221 🚀 Python-3.12.3 torch-2.9.0+cu128 CUDA:0 (NVIDIA GeForce RTX 5080, 15832MiB)
+YOLO11m summary (fused): 125 layers, 20,075,521 parameters, 0 gradients, 67.9 GFLOPs
+[34m[1mval: [0mFast image access ✅ (ping: 0.0±0.0 ms, read: 4668.5±1508.2 MB/s, size: 74.2 KB)
+[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 177.4Mit/s 0.0s[K[34m[1mval: [0mScanning /home/currycareation/Desktop/yolo_embeding_malvious_repo/data/grocery_augmented/valid/labels.cache... 296 images, 77 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 296/296 12.4Mit/s 0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 5% ╸─────────── 1/19 1.3it/s 0.2s<14.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 11% ━─────────── 2/19 2.8it/s 0.4s<6.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 16% ━╸────────── 3/19 3.8it/s 0.6s<4.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 21% ━━╸───────── 4/19 5.1it/s 0.7s<3.0s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 32% ━━━╸──────── 6/19 7.2it/s 0.8s<1.8s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 8/19 8.8it/s 1.0s<1.3s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 53% ━━━━━━────── 10/19 9.8it/s 1.2s<0.9s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 63% ━━━━━━━╸──── 12/19 10.3it/s 1.3s<0.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 74% ━━━━━━━━╸─── 14/19 11.0it/s 1.5s<0.5s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 84% ━━━━━━━━━━── 16/19 12.2it/s 1.6s<0.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 95% ━━━━━━━━━━━─ 18/19 12.2it/s 1.8s<0.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 10.4it/s 1.8s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 19/19 10.4it/s 1.8s
+                   all        296        499      0.895      0.941      0.935      0.869
+Speed: 1.0ms preprocess, 3.8ms inference, 0.0ms loss, 0.2ms postprocess per image
+Results saved to [1m/home/currycareation/Desktop/yolo_embeding_malvious_repo/runs/detect/val38[0m
+/home/currycareation/.local/lib/python3.12/site-packages/torch/backends/__init__.py:46: UserWarning: Please use the new API settings to control TF32 behavior, such as torch.backends.cudnn.conv.fp32_precision = 'tf32' or torch.backends.cuda.matmul.fp32_precision = 'ieee'. Old settings, e.g, torch.backends.cuda.matmul.allow_tf32 = True, torch.backends.cudnn.allow_tf32 = True, allowTF32CuDNN() and allowTF32CuBLAS() will be deprecated after Pytorch 2.9. Please see https://pytorch.org/docs/main/notes/cuda.html#tensorfloat-32-tf32-on-ampere-and-later-devices (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:80.)
+  self.setter(val)
+/home/currycareation/.local/lib/python3.12/site-packages/milvus_lite/__init__.py:15: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+
+Results for YOLOv11_Baseline_488_Classes:
+  mAP@0.5: 0.9352
+  Precision: 0.8948
+  Recall: 0.9413
+  F1-Score: 0.9175
+  Inference Time: 3.81 ms
+  FPS: 262.64
+
+================================================================================
+Running Experiment: YOLOv8_DOLG_Milvus_Hybrid
+================================================================================
+
+⚠️  DOLG weights not found at dolg_model.pth
+   Using EfficientNet pretrained on ImageNet
+   For best results, train DOLG model on retail dataset
+✅ DOLG Extractor initialized on cuda:0
+   Batch size: 32
+   Mixed precision: True
+✅ Connected to Milvus database: experiment_results/milvus_retail.db
+🔥 Warming up GPU for optimal performance...
+✅ GPU warmed up
+✅ Hybrid detector ready for production inference
+Evaluating hybrid model...
+  0%|          | 0/296 [00:00<?, ?it/s]/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:287: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+  0%|          | 1/296 [00:01<09:04,  1.85s/it]/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:237: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+  1%|          | 2/296 [00:04<09:58,  2.03s/it]/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:287: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+  1%|▏         | 4/296 [00:05<06:20,  1.30s/it]  4%|▎         | 11/296 [00:07<02:24,  1.97it/s]  7%|▋         | 20/296 [00:07<01:00,  4.56it/s]  8%|▊         | 24/296 [00:09<01:15,  3.61it/s] 11%|█         | 33/296 [00:09<00:40,  6.50it/s] 13%|█▎        | 38/296 [00:11<00:53,  4.85it/s] 16%|█▌        | 47/296 [00:11<00:31,  7.87it/s] 19%|█▉        | 56/296 [00:11<00:20, 11.81it/s] 22%|██▏       | 64/296 [00:11<00:14, 16.15it/s] 24%|██▍       | 72/296 [00:11<00:10, 21.49it/s] 27%|██▋       | 81/296 [00:11<00:07, 28.61it/s] 30%|███       | 90/296 [00:11<00:05, 36.28it/s] 33%|███▎      | 99/296 [00:11<00:04, 44.29it/s] 36%|███▌      | 107/296 [00:12<00:03, 50.70it/s] 39%|███▉      | 116/296 [00:12<00:03, 57.87it/s] 43%|████▎     | 126/296 [00:12<00:02, 65.58it/s] 46%|████▌     | 136/296 [00:12<00:02, 72.52it/s] 49%|████▉     | 146/296 [00:12<00:01, 77.98it/s] 52%|█████▏    | 155/296 [00:12<00:01, 80.74it/s] 55%|█████▌    | 164/296 [00:12<00:01, 81.28it/s] 59%|█████▉    | 174/296 [00:12<00:01, 84.98it/s] 62%|██████▏   | 183/296 [00:12<00:01, 85.99it/s] 65%|██████▍   | 192/296 [00:13<00:01, 85.55it/s] 68%|██████▊   | 202/296 [00:13<00:01, 88.01it/s] 72%|███████▏  | 212/296 [00:13<00:00, 89.34it/s] 75%|███████▌  | 222/296 [00:13<00:00, 91.94it/s] 81%|████████  | 239/296 [00:13<00:00, 113.87it/s] 86%|████████▋ | 256/296 [00:13<00:00, 128.65it/s] 92%|█████████▏| 273/296 [00:13<00:00, 139.14it/s] 98%|█████████▊| 290/296 [00:13<00:00, 143.97it/s]100%|██████████| 296/296 [00:13<00:00, 21.43it/s] 
+✅ Milvus connection closed
+
+Results for YOLOv8_DOLG_Milvus_Hybrid:
+  mAP@0.5: 0.0034
+  Precision: 0.0039
+  Recall: 0.0040
+  F1-Score: 0.0040
+  Inference Time: 5.38 ms
+  FPS: 186.05
+
+================================================================================
+Running Experiment: YOLOv8_DOLG_Milvus_HighThreshold
+================================================================================
+
+⚠️  DOLG weights not found at dolg_model.pth
+   Using EfficientNet pretrained on ImageNet
+   For best results, train DOLG model on retail dataset
+✅ DOLG Extractor initialized on cuda:0
+   Batch size: 32
+   Mixed precision: True
+✅ Connected to Milvus database: experiment_results/milvus_retail.db
+🔥 Warming up GPU for optimal performance...
+✅ GPU warmed up
+✅ Hybrid detector ready for production inference
+Evaluating hybrid model...
+  0%|          | 0/296 [00:00<?, ?it/s]  3%|▎         | 8/296 [00:00<00:03, 77.33it/s]  6%|▌         | 17/296 [00:00<00:03, 82.47it/s]  9%|▉         | 26/296 [00:00<00:03, 80.98it/s] 12%|█▏        | 35/296 [00:00<00:03, 81.44it/s] 15%|█▍        | 44/296 [00:00<00:03, 80.37it/s] 18%|█▊        | 53/296 [00:00<00:03, 77.75it/s] 21%|██        | 61/296 [00:00<00:03, 77.42it/s] 23%|██▎       | 69/296 [00:00<00:02, 76.76it/s] 26%|██▋       | 78/296 [00:00<00:02, 78.48it/s] 29%|██▉       | 86/296 [00:01<00:02, 77.56it/s] 32%|███▏      | 95/296 [00:01<00:02, 80.42it/s] 35%|███▌      | 104/296 [00:01<00:02, 80.85it/s] 38%|███▊      | 113/296 [00:01<00:02, 81.28it/s] 41%|████      | 122/296 [00:01<00:02, 82.56it/s] 44%|████▍     | 131/296 [00:01<00:01, 83.34it/s] 47%|████▋     | 140/296 [00:01<00:01, 81.18it/s] 50%|█████     | 149/296 [00:01<00:01, 82.09it/s] 53%|█████▎    | 158/296 [00:01<00:01, 84.21it/s] 56%|█████▋    | 167/296 [00:02<00:01, 83.85it/s] 59%|█████▉    | 176/296 [00:02<00:01, 83.19it/s] 62%|██████▎   | 185/296 [00:02<00:01, 83.81it/s] 66%|██████▌   | 194/296 [00:02<00:01, 82.39it/s] 69%|██████▊   | 203/296 [00:02<00:01, 84.37it/s] 72%|███████▏  | 212/296 [00:02<00:00, 84.47it/s] 75%|███████▍  | 221/296 [00:02<00:00, 84.96it/s] 80%|████████  | 238/296 [00:02<00:00, 109.16it/s] 86%|████████▌ | 255/296 [00:02<00:00, 125.86it/s] 92%|█████████▏| 272/296 [00:03<00:00, 137.64it/s] 98%|█████████▊| 289/296 [00:03<00:00, 146.16it/s]100%|██████████| 296/296 [00:03<00:00, 93.66it/s] 
+✅ Milvus connection closed
+
+Results for YOLOv8_DOLG_Milvus_HighThreshold:
+  mAP@0.5: 0.0034
+  Precision: 0.0039
+  Recall: 0.0040
+  F1-Score: 0.0040
+  Inference Time: 5.43 ms
+  FPS: 184.16
+
+====================================================================================================
+EXPERIMENT COMPARISON REPORT
+====================================================================================================
+
+Experiment                                  mAP@0.5  Precision     Recall         F1        FPS     Milvus
+----------------------------------------------------------------------------------------------------
+YOLOv8_Baseline_488_Classes                  0.9414     0.8720     0.9327     0.9013     274.33        N/A
+YOLOv11_Baseline_488_Classes                 0.9352     0.8948     0.9413     0.9175     262.64        N/A
+YOLOv8_DOLG_Milvus_Hybrid                    0.0034     0.0039     0.0040     0.0040     186.05        N/A
+YOLOv8_DOLG_Milvus_HighThreshold             0.0034     0.0039     0.0040     0.0040     184.16        N/A
+
+====================================================================================================
+
+Comparison report saved to: experiment_comparison.json
+
+✅ All experiments completed successfully!
+📊 View results in MLflow UI: mlflow ui --backend-store-uri file:./mlruns
+
+################################################################################
+# RETAIL ITEM DETECTION - COMPLETE EXPERIMENTAL PIPELINE
+################################################################################
+
+
+================================================================================
+Using Existing Pretrained YOLOV8 Model
+================================================================================
+
+✅ Found pretrained model: grocery/runs/yolov8_grocery_baseline_20251114_194239/weights/best.pt
+   Skipping training for yolov8_488_classes
+   Set 'force_retrain: true' in config to retrain anyway
+
+
+================================================================================
+Using Existing Pretrained YOLOV11 Model
+================================================================================
+
+✅ Found pretrained model: grocery/runs/yolo11_grocery_baseline_20251114_1953262/weights/best.pt
+   Skipping training for yolov11_488_classes
+   Set 'force_retrain: true' in config to retrain anyway
+
+
+📋 Model Summary:
+   YOLOv8: grocery/runs/yolov8_grocery_baseline_20251114_194239/weights/best.pt
+   YOLOv11: grocery/runs/yolo11_grocery_baseline_20251114_1953262/weights/best.pt
+
+
+================================================================================
+Populating Milvus Database with DOLG Embeddings
+================================================================================
+
+
+✅ Milvus database populated: experiment_results/milvus_retail.db
+
+================================================================================
+Running Comparative Experiments
+================================================================================
+
+
+================================================================================
+Generating Visualization Reports
+================================================================================
+
+✅ Saved: experiment_results/visualizations/detection_performance.png
+✅ Saved: experiment_results/visualizations/speed_performance.png
+✅ Saved: experiment_results/visualizations/summary_table.png
+✅ Saved: experiment_results/visualizations/results_summary.csv
+
+📊 All visualizations saved to: experiment_results/visualizations
+
+================================================================================
+Generating Comprehensive Report
+================================================================================
+
+✅ Report saved to: experiment_results/EXPERIMENT_REPORT.md
+
+################################################################################
+# PIPELINE COMPLETE!
+################################################################################
+
+📁 Results directory: experiment_results
+📊 View MLflow UI: mlflow ui --backend-store-uri file:./mlruns

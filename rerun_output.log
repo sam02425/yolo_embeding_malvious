@@ -1,0 +1,41 @@
+/home/currycareation/.local/lib/python3.12/site-packages/torch/backends/__init__.py:46: UserWarning: Please use the new API settings to control TF32 behavior, such as torch.backends.cudnn.conv.fp32_precision = 'tf32' or torch.backends.cuda.matmul.fp32_precision = 'ieee'. Old settings, e.g, torch.backends.cuda.matmul.allow_tf32 = True, torch.backends.cudnn.allow_tf32 = True, allowTF32CuDNN() and allowTF32CuBLAS() will be deprecated after Pytorch 2.9. Please see https://pytorch.org/docs/main/notes/cuda.html#tensorfloat-32-tf32-on-ampere-and-later-devices (Triggered internally at /pytorch/aten/src/ATen/Context.cpp:80.)
+  self.setter(val)
+/home/currycareation/.local/lib/python3.12/site-packages/milvus_lite/__init__.py:15: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+Loading YOLO model...
+Loading embedding extractor...
+⚠️  DOLG weights not found at dolg_model.pth
+   Using EfficientNet pretrained on ImageNet
+   For best results, train DOLG model on retail dataset
+✅ DOLG Extractor initialized on cuda:0
+   Batch size: 32
+   Mixed precision: True
+Loading Milvus database...
+✅ Connected to Milvus database: experiment_results/milvus_retail.db
+Creating hybrid detector...
+🔥 Warming up GPU for optimal performance...
+✅ GPU warmed up
+✅ Hybrid detector ready for production inference
+Found 296 validation images
+
+Evaluating hybrid model...
+Evaluating hybrid model...
+  0%|          | 0/296 [00:00<?, ?it/s]/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:287: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+  0%|          | 1/296 [00:01<09:05,  1.85s/it]/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:237: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+  1%|          | 2/296 [00:04<10:16,  2.10s/it]/home/currycareation/Desktop/yolo_embeding_malvious_repo/yolo_vs_embeding_malvious/experimental_framework.py:287: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+  1%|▏         | 4/296 [00:05<06:32,  1.34s/it]  4%|▎         | 11/296 [00:07<02:30,  1.90it/s]  7%|▋         | 20/296 [00:07<01:02,  4.40it/s]  8%|▊         | 24/296 [00:09<01:18,  3.46it/s] 11%|█         | 33/296 [00:09<00:42,  6.24it/s] 13%|█▎        | 38/296 [00:11<00:55,  4.66it/s] 16%|█▌        | 47/296 [00:11<00:32,  7.59it/s] 19%|█▊        | 55/296 [00:11<00:21, 10.98it/s] 21%|██▏       | 63/296 [00:11<00:15, 15.29it/s] 24%|██▍       | 71/296 [00:12<00:10, 20.56it/s] 27%|██▋       | 80/296 [00:12<00:07, 27.53it/s] 30%|███       | 89/296 [00:12<00:05, 35.07it/s] 33%|███▎      | 98/296 [00:12<00:04, 42.92it/s] 36%|███▌      | 106/296 [00:12<00:03, 49.08it/s] 39%|███▊      | 114/296 [00:12<00:03, 54.51it/s] 41%|████      | 122/296 [00:12<00:02, 59.86it/s] 44%|████▍     | 131/296 [00:12<00:02, 65.23it/s] 47%|████▋     | 139/296 [00:12<00:02, 68.87it/s] 50%|█████     | 148/296 [00:13<00:02, 72.98it/s] 53%|█████▎    | 157/296 [00:13<00:01, 76.10it/s] 56%|█████▌    | 166/296 [00:13<00:01, 76.74it/s] 59%|█████▉    | 176/296 [00:13<00:01, 79.62it/s] 62%|██████▎   | 185/296 [00:13<00:01, 81.43it/s] 66%|██████▌   | 194/296 [00:13<00:01, 79.58it/s] 69%|██████▊   | 203/296 [00:13<00:01, 81.28it/s] 72%|███████▏  | 212/296 [00:13<00:01, 81.48it/s] 75%|███████▍  | 221/296 [00:13<00:00, 81.30it/s] 80%|███████▉  | 236/296 [00:13<00:00, 99.43it/s] 85%|████████▌ | 253/296 [00:14<00:00, 118.11it/s] 91%|█████████ | 270/296 [00:14<00:00, 132.26it/s] 97%|█████████▋| 287/296 [00:14<00:00, 142.28it/s]100%|██████████| 296/296 [00:14<00:00, 20.61it/s] 
+
+============================================================
+RESULTS:
+============================================================
+mAP@0.5: 0.0034
+Precision: 0.0039
+Recall: 0.0040
+True Positives: 2
+False Positives: 505
+False Negatives: 497
+Milvus Hit Rate: 0.0000
+✅ Milvus connection closed

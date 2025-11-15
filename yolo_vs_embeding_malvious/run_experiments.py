@@ -23,6 +23,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
+PYTHON_EXEC = sys.executable or "python3"
+
 
 class ExperimentOrchestrator:
     """Orchestrate complete experimental pipeline"""
@@ -35,6 +37,7 @@ class ExperimentOrchestrator:
             config_file: Path to experiment configuration YAML
         """
         self.config_file = config_file
+        self.base_dir = Path(__file__).resolve().parent
         self.config = self._load_config()
         self.results_dir = Path(self.config.get('results_dir', './results'))
         self.results_dir.mkdir(parents=True, exist_ok=True)
@@ -98,7 +101,7 @@ class ExperimentOrchestrator:
         # Check if tuning or standard training
         if train_config.get('use_tuning', False):
             cmd = [
-                'python', 'yolo_tuning.py',
+                PYTHON_EXEC, str(self.base_dir / 'yolo_tuning.py'),
                 '--data', train_config['dataset_yaml'],
                 '--model', train_config[f'{model_type}_base'],
                 '--imgsz', str(train_config['imgsz']),
@@ -160,7 +163,7 @@ class ExperimentOrchestrator:
         milvus_config = self.config['milvus']
         
         cmd = [
-            'python', 'populate_milvus_embeddings.py',
+            PYTHON_EXEC, str(self.base_dir / 'populate_milvus_embeddings.py'),
             '--dataset', self.config['training']['dataset_yaml'],
             '--dolg-model', milvus_config['dolg_model_path'],
             '--milvus-db', str(self.results_dir / milvus_config['db_name']),
@@ -195,7 +198,7 @@ class ExperimentOrchestrator:
         
         # Build command
         cmd = [
-            'python', 'experimental_framework.py',
+            PYTHON_EXEC, str(self.base_dir / 'experimental_framework.py'),
             '--dataset', self.config['training']['dataset_yaml'],
             '--yolov8-model', trained_models.get('yolov8', 'yolov8m.pt'),
             '--yolov11-model', trained_models.get('yolov11', 'yolo11m.pt'),
@@ -204,8 +207,14 @@ class ExperimentOrchestrator:
             '--batch', str(self.config['training']['batch_size']),
             '--device', self.config['training']['device'],
             '--similarity-threshold', str(experiment_config['similarity_threshold']),
+            '--iou-threshold', str(self.config['advanced']['iou_threshold']),
             '--mlflow-uri', self.config['training']['mlflow_uri']
         ]
+        
+        # Add Milvus database path if provided
+        if milvus_db:
+            cmd.extend(['--milvus-db-path', milvus_db])
+            cmd.extend(['--milvus-collection', self.config['milvus']['collection_name']])
         
         if experiment_config.get('run_all', True):
             cmd.append('--run-all')

@@ -58,6 +58,17 @@ class ExperimentConfig:
     imgsz: int
     batch_size: int
     device: str
+    iou_threshold: float = 0.25  # IoU threshold for evaluation matching
+    milvus_db_path: Optional[str] = None
+    milvus_embedding_dim: int = 128
+    milvus_index_type: str = "FLAT"
+    milvus_metric_type: str = "COSINE"
+    # Confidence-based ensemble settings
+    use_confidence_ensemble: bool = False  # Use Milvus only when YOLO confidence is low
+    confidence_threshold: float = 0.7  # YOLO confidence threshold for ensemble
+    use_retail_embeddings: bool = False  # Use retail-trained DOLG instead of ImageNet
+    retail_model_path: Optional[str] = None  # Path to retail-trained DOLG checkpoint
+    embedding_extractor_type: str = 'imagenet'  # 'imagenet', 'retail', or 'ensemble'
 
 
 @dataclass
@@ -136,12 +147,13 @@ class DOLGEmbeddingExtractor:
             torch.backends.cudnn.allow_tf32 = True
         
         # Compile model for faster inference (PyTorch 2.0+)
-        if hasattr(torch, 'compile'):
-            try:
-                self.model = torch.compile(self.model, mode='max-autotune')
-                print("✅ Model compiled with torch.compile for faster inference")
-            except Exception as e:
-                print(f"⚠️  Could not compile model: {e}")
+        # DISABLED: torch.compile causes silent crashes
+        # if hasattr(torch, 'compile'):
+        #     try:
+        #         self.model = torch.compile(self.model, mode='max-autotune')
+        #         print("✅ Model compiled with torch.compile for faster inference")
+        #     except Exception as e:
+        #         print(f"⚠️  Could not compile model: {e}")
         
         # Setup transforms
         self.transform = self._get_transforms()
@@ -304,11 +316,47 @@ class DOLGEmbeddingExtractor:
             print("✅ GPU warmed up")
 
 
+def create_embedding_extractor(config: ExperimentConfig) -> DOLGEmbeddingExtractor:
+    """
+    Factory function to create appropriate embedding extractor based on configuration
+    
+    Args:
+        config: Experiment configuration
+        
+    Returns:
+        Embedding extractor instance (either DOLGEmbeddingExtractor or retail variant)
+    """
+    if config.use_retail_embeddings and config.retail_model_path:
+        # Try to use retail-trained embeddings
+        try:
+            from retail_dolg_extractor import create_embedding_extractor as create_retail_extractor
+            
+            print(f"🎯 Creating retail-trained embedding extractor: {config.embedding_extractor_type}")
+            return create_retail_extractor(
+                extractor_type=config.embedding_extractor_type,
+                model_path=config.retail_model_path,
+                embedding_dim=config.milvus_embedding_dim,
+                device=config.device
+            )
+        except ImportError:
+            print("⚠️  retail_dolg_extractor not found, falling back to ImageNet pretrained")
+        except Exception as e:
+            print(f"⚠️  Error loading retail embeddings: {e}, falling back to ImageNet")
+    
+    # Default: Use ImageNet pretrained DOLG
+    print("📦 Using ImageNet pretrained DOLG embeddings")
+    return DOLGEmbeddingExtractor(
+        model_path=config.embedding_model or "dolg_model.pth",
+        device=config.device
+    )
+
+
 class MilvusRetailDB:
     """Production-grade Milvus database for retail item embeddings with auto-setup"""
     
     def __init__(self, db_path: str = "./milvus_retail.db", collection_name: str = "retail_items",
-                 auto_setup: bool = True):
+                 auto_setup: bool = True, embedding_dim: int = 128, index_type: str = "FLAT",
+                 metric_type: str = "COSINE", connect_only: bool = False):
         """
         Initialize production-grade Milvus client with automatic setup
         
@@ -319,7 +367,9 @@ class MilvusRetailDB:
         """
         self.db_path = Path(db_path)
         self.collection_name = collection_name
-        self.embedding_dim = 128
+        self.embedding_dim = embedding_dim
+        self.index_type = index_type.upper()
+        self.metric_type = metric_type.upper()
         self.milvus_uri = str(self.db_path)
         
         # Ensure pymilvus is installed
@@ -339,7 +389,7 @@ class MilvusRetailDB:
             self.CollectionSchema = CollectionSchema
         
         # Auto-setup if requested
-        if auto_setup:
+        if auto_setup and not connect_only:
             self._ensure_milvus_ready()
         
         # Initialize client with production settings
@@ -393,13 +443,26 @@ class MilvusRetailDB:
         print(f"📊 Creating collection with optimized index...")
         index_params = self.client.prepare_index_params()
         
-        # Use FLAT for exact search (best accuracy) or IVF_FLAT for speed
-        # For production with GPU, FLAT is recommended for <1M vectors
-        index_params.add_index(
-            field_name="embedding",
-            index_type="FLAT",  # Best accuracy, GPU-accelerated
-            metric_type="COSINE"  # Cosine similarity for L2-normalized embeddings
-        )
+        if self.index_type == "IVF_FLAT":
+            index_params.add_index(
+                field_name="embedding",
+                index_type="IVF_FLAT",
+                metric_type=self.metric_type,
+                params={"nlist": 1024}
+            )
+        elif self.index_type == "HNSW":
+            index_params.add_index(
+                field_name="embedding",
+                index_type="HNSW",
+                metric_type=self.metric_type,
+                params={"M": 16, "efConstruction": 200}
+            )
+        else:
+            index_params.add_index(
+                field_name="embedding",
+                index_type=self.index_type,
+                metric_type=self.metric_type
+            )
         
         # Create collection with production settings
         self.client.create_collection(
@@ -415,8 +478,8 @@ class MilvusRetailDB:
         
         print(f"✅ Collection '{self.collection_name}' created successfully")
         print(f"   Embedding dimension: {self.embedding_dim}")
-        print(f"   Index type: FLAT (GPU-accelerated)")
-        print(f"   Metric type: COSINE")
+        print(f"   Index type: {self.index_type}")
+        print(f"   Metric type: {self.metric_type}")
         
     def insert_embeddings(self, embeddings: List[Dict], batch_size: int = 1000):
         """
@@ -484,10 +547,10 @@ class MilvusRetailDB:
                 limit=top_k,
                 filter=filter_expr,
                 output_fields=["upc", "class_id", "class_name", "template_idx"],
-                search_params={
-                    "metric_type": "COSINE",
-                    "params": {}
-                }
+            search_params={
+                "metric_type": self.metric_type,
+                "params": {}
+            }
             )
             
             return results[0] if results else []
@@ -521,7 +584,9 @@ class HybridYOLODetector:
                  embedding_extractor: DOLGEmbeddingExtractor,
                  milvus_db: MilvusRetailDB,
                  similarity_threshold: float = 0.5,
-                 device: str = "cuda:0"):
+                 device: str = "cuda:0",
+                 use_confidence_ensemble: bool = False,
+                 confidence_threshold: float = 0.7):
         """
         Initialize production-grade hybrid detector
         
@@ -531,11 +596,15 @@ class HybridYOLODetector:
             milvus_db: Milvus database for similarity search
             similarity_threshold: Minimum similarity score for Milvus matches
             device: Device for processing
+            use_confidence_ensemble: If True, use Milvus only when YOLO confidence < threshold
+            confidence_threshold: YOLO confidence threshold for ensemble decision
         """
         self.yolo = yolo_model
         self.embedding_extractor = embedding_extractor
         self.milvus_db = milvus_db
         self.similarity_threshold = similarity_threshold
+        self.use_confidence_ensemble = use_confidence_ensemble
+        self.confidence_threshold = confidence_threshold
         
         # Force GPU usage
         if device.startswith('cuda'):
@@ -637,27 +706,36 @@ class HybridYOLODetector:
             torch.cuda.synchronize()
         timings['embedding_extraction'] = (time.perf_counter() - t0) * 1000
         
-        # Milvus similarity search
+        # Milvus similarity search with confidence-based ensemble
         t0 = time.perf_counter()
         detections = []
         milvus_hits = 0
+        milvus_attempted = 0
         
         for i, (info, embedding) in enumerate(zip(detection_info, embeddings)):
-            # Search Milvus
-            similar_items = self.milvus_db.search_similar(embedding, top_k=1)
+            # Confidence-based ensemble: Only use Milvus when YOLO confidence is low
+            should_use_milvus = True
+            if self.use_confidence_ensemble:
+                should_use_milvus = info['confidence'] < self.confidence_threshold
             
-            # Use Milvus result if similarity is high enough
+            # Default to YOLO prediction
             final_class_id = info['yolo_class_id']
             final_class_name = info['yolo_class_name']
             milvus_similarity = 0.0
             used_milvus = False
             
-            if similar_items and similar_items[0]['distance'] >= self.similarity_threshold:
-                milvus_similarity = similar_items[0]['distance']
-                final_class_id = similar_items[0]['entity']['class_id']
-                final_class_name = similar_items[0]['entity']['class_name']
-                used_milvus = True
-                milvus_hits += 1
+            if should_use_milvus:
+                milvus_attempted += 1
+                # Search Milvus
+                similar_items = self.milvus_db.search_similar(embedding, top_k=1)
+                
+                # Use Milvus result if similarity is high enough
+                if similar_items and similar_items[0]['distance'] >= self.similarity_threshold:
+                    milvus_similarity = similar_items[0]['distance']
+                    final_class_id = similar_items[0]['entity']['class_id']
+                    final_class_name = similar_items[0]['entity']['class_name']
+                    used_milvus = True
+                    milvus_hits += 1
             
             detections.append({
                 'bbox': info['bbox'],
@@ -666,12 +744,15 @@ class HybridYOLODetector:
                 'class_name': final_class_name,
                 'yolo_class': info['yolo_class_id'],
                 'milvus_similarity': milvus_similarity,
-                'used_milvus': used_milvus
+                'used_milvus': used_milvus,
+                'milvus_attempted': should_use_milvus
             })
         
         timings['milvus_search'] = (time.perf_counter() - t0) * 1000
         timings['total_hybrid_time'] = sum(timings.values())
         timings['milvus_hit_rate'] = milvus_hits / len(detections) if detections else 0.0
+        timings['milvus_attempt_rate'] = milvus_attempted / len(detections) if detections else 0.0
+        timings['milvus_success_rate'] = milvus_hits / milvus_attempted if milvus_attempted > 0 else 0.0
         
         return detections, timings
     
@@ -699,7 +780,7 @@ class HybridYOLODetector:
 class RetailEvaluator:
     """Comprehensive evaluation for retail detection systems"""
     
-    def __init__(self, dataset_yaml: str, iou_threshold: float = 0.5):
+    def __init__(self, dataset_yaml: str, iou_threshold: float = 0.25):
         """
         Initialize evaluator
         
@@ -776,12 +857,17 @@ class RetailEvaluator:
         milvus_hits = 0
         total_detections = 0
         
+        # DEBUG: Track first image
+        DEBUG_FIRST_IMG = True
+        
         # Process each validation image
-        for img_path, label_path in tqdm(zip(val_images, val_labels), total=len(val_images)):
+        for img_idx, (img_path, label_path) in enumerate(tqdm(zip(val_images, val_labels), total=len(val_images), disable=True)):
             import cv2
             
-            # Load image
+            # Load image using cv2 for hybrid detector
             image = cv2.imread(img_path)
+            if image is None:
+                continue
             h, w = image.shape[:2]
             
             # Load ground truth
@@ -792,17 +878,18 @@ class RetailEvaluator:
                     if len(parts) >= 5:
                         cls_id = int(parts[0])
                         x_center, y_center, width, height = map(float, parts[1:5])
-                        # Convert to xyxy format
+                        # Convert to xyxy format using image dimensions
                         x1 = (x_center - width / 2) * w
                         y1 = (y_center - height / 2) * h
                         x2 = (x_center + width / 2) * w
                         y2 = (y_center + height / 2) * h
+                        
                         gt_boxes.append({
                             'bbox': [x1, y1, x2, y2],
                             'class_id': cls_id
                         })
             
-            # Get predictions
+            # Get predictions from hybrid detector
             predictions, timings = hybrid_detector.predict(image)
             
             # Track timings
@@ -1009,21 +1096,26 @@ class ExperimentRunner:
             model = YOLO(config.model_path)
             
             if config.use_milvus:
-                # Create hybrid detector
-                embedding_extractor = DOLGEmbeddingExtractor(
-                    model_path=config.embedding_model or "dolg_model.pth",
-                    device=config.device
-                )
+                # Create hybrid detector with appropriate embedding extractor
+                embedding_extractor = create_embedding_extractor(config)
+                
                 milvus_db = MilvusRetailDB(
-                    db_path=self._make_milvus_db_path(config.name),
-                    collection_name=config.milvus_collection or "retail_items"
+                    db_path=config.milvus_db_path or self._make_milvus_db_path(config.name),
+                    collection_name=config.milvus_collection or "retail_items",
+                    auto_setup=False if config.milvus_db_path else True,
+                    embedding_dim=config.milvus_embedding_dim,
+                    index_type=config.milvus_index_type,
+                    metric_type=config.milvus_metric_type,
+                    connect_only=bool(config.milvus_db_path)
                 )
                 
                 hybrid_detector = HybridYOLODetector(
                     yolo_model=model,
                     embedding_extractor=embedding_extractor,
                     milvus_db=milvus_db,
-                    similarity_threshold=config.similarity_threshold
+                    similarity_threshold=config.similarity_threshold,
+                    use_confidence_ensemble=config.use_confidence_ensemble,
+                    confidence_threshold=config.confidence_threshold
                 )
                 
                 # Load validation data
@@ -1035,17 +1127,34 @@ class ExperimentRunner:
                 val_labels = [str(img).replace('images', 'labels').replace(img.suffix, '.txt') 
                              for img in val_images]
                 
-                # Evaluate hybrid model
-                evaluator = RetailEvaluator(config.dataset_yaml)
+                # Evaluate hybrid model with configured IoU threshold
+                evaluator = RetailEvaluator(config.dataset_yaml, iou_threshold=config.iou_threshold)
                 metrics = evaluator.evaluate_hybrid_model(hybrid_detector, 
                                                          [str(img) for img in val_images],
                                                          val_labels)
                 
                 milvus_db.close()
             else:
-                # Evaluate baseline YOLO
+                # Evaluate baseline YOLO (uses built-in validation, not custom IoU)
                 evaluator = RetailEvaluator(config.dataset_yaml)
-                metrics = evaluator.evaluate_yolo_baseline(model)
+                try:
+                    metrics = evaluator.evaluate_yolo_baseline(model)
+                except Exception as exc:
+                    print(f"❌ Baseline evaluation failed for {config.name}: {exc}")
+                    metrics = EvaluationMetrics(
+                        map50=0.0,
+                        map50_95=0.0,
+                        precision=0.0,
+                        recall=0.0,
+                        f1_score=0.0,
+                        per_class_ap={},
+                        per_class_precision={},
+                        per_class_recall={},
+                        inference_time_ms=float('nan'),
+                        fps=float('nan'),
+                        preprocess_time_ms=0.0,
+                        postprocess_time_ms=0.0
+                    )
             
             # Log metrics to MLflow
             mlflow.log_metric('mAP50', metrics.map50)
@@ -1164,6 +1273,32 @@ def main():
     parser.add_argument("--device", type=str, default="cuda:0", help="Device")
     parser.add_argument("--similarity-threshold", type=float, default=0.5,
                        help="Milvus similarity threshold")
+    parser.add_argument("--iou-threshold", type=float, default=0.25,
+                       help="IoU threshold for evaluation bbox matching")
+    parser.add_argument("--high-sim-threshold", type=float, default=0.7,
+                       help="Higher similarity threshold for second cosine experiment")
+    parser.add_argument("--milvus-db-path", type=str, default=None,
+                       help="Path to existing Milvus DB for cosine hybrid runs")
+    parser.add_argument("--milvus-collection", type=str, default=None,
+                       help="Milvus collection name for cosine hybrid runs")
+    parser.add_argument("--milvus-embedding-dim", type=int, default=128,
+                       help="Embedding dimension for cosine hybrid collection")
+    parser.add_argument("--milvus-index-type", type=str, default="FLAT",
+                       help="Index type description for cosine hybrid collection")
+    parser.add_argument("--milvus-metric", type=str, default="COSINE",
+                       help="Similarity metric for cosine hybrid collection")
+    parser.add_argument("--ann-milvus-db-path", type=str, default=None,
+                       help="Path to ANN Milvus DB (e.g., HNSW/IVF)")
+    parser.add_argument("--ann-milvus-collection", type=str, default=None,
+                       help="Milvus collection name for ANN runs")
+    parser.add_argument("--ann-embedding-dim", type=int, default=128,
+                       help="Embedding dimension for ANN collection")
+    parser.add_argument("--ann-index-type", type=str, default="HNSW",
+                       help="Index type label for ANN collection")
+    parser.add_argument("--ann-metric", type=str, default="COSINE",
+                       help="Similarity metric for ANN collection")
+    parser.add_argument("--ann-thresholds", type=float, nargs="*", default=[0.5, 0.7],
+                       help="Similarity thresholds to evaluate for ANN runs")
     parser.add_argument("--mlflow-uri", type=str, default="file:./mlruns",
                        help="MLflow tracking URI")
     parser.add_argument("--run-all", action="store_true",
@@ -1204,7 +1339,8 @@ def main():
         dataset_yaml=args.dataset,
         imgsz=args.imgsz,
         batch_size=args.batch,
-        device=args.device
+        device=args.device,
+        iou_threshold=args.iou_threshold
     ))
     
     # Experiment 2: YOLOv11 Baseline
@@ -1219,7 +1355,8 @@ def main():
         dataset_yaml=args.dataset,
         imgsz=args.imgsz,
         batch_size=args.batch,
-        device=args.device
+        device=args.device,
+        iou_threshold=args.iou_threshold
     ))
     
     if not args.run_baseline_only:
@@ -1229,29 +1366,61 @@ def main():
             model_type="yolov8_hybrid",
             model_path=args.yolov8_model,
             use_milvus=True,
-            milvus_collection="retail_items_dolg",
+            milvus_collection=args.milvus_collection or "retail_items",
             embedding_model=args.dolg_model,
             similarity_threshold=args.similarity_threshold,
             dataset_yaml=args.dataset,
             imgsz=args.imgsz,
             batch_size=args.batch,
-            device=args.device
+            device=args.device,
+            iou_threshold=args.iou_threshold,
+            milvus_db_path=args.milvus_db_path,
+            milvus_embedding_dim=args.milvus_embedding_dim,
+            milvus_index_type=args.milvus_index_type.upper(),
+            milvus_metric_type=args.milvus_metric.upper()
         ))
         
-        # Experiment 4: YOLOv8 with higher Milvus threshold
+        # Experiment 4: YOLOv8 with higher Milvus threshold (will be updated with corrected threshold)
         experiments.append(ExperimentConfig(
             name="YOLOv8_DOLG_Milvus_HighThreshold",
             model_type="yolov8_hybrid",
             model_path=args.yolov8_model,
             use_milvus=True,
-            milvus_collection="retail_items_dolg",
+            milvus_collection=args.milvus_collection or "retail_items",
             embedding_model=args.dolg_model,
-            similarity_threshold=0.7,  # Higher threshold
+            similarity_threshold=args.high_sim_threshold,
             dataset_yaml=args.dataset,
             imgsz=args.imgsz,
             batch_size=args.batch,
-            device=args.device
+            device=args.device,
+            iou_threshold=args.iou_threshold,
+            milvus_db_path=args.milvus_db_path,
+            milvus_embedding_dim=args.milvus_embedding_dim,
+            milvus_index_type=args.milvus_index_type.upper(),
+            milvus_metric_type=args.milvus_metric.upper()
         ))
+        
+        if args.ann_milvus_db_path:
+            ann_collection = args.ann_milvus_collection or "retail_items_ann"
+            for th in args.ann_thresholds:
+                experiments.append(ExperimentConfig(
+                    name=f"YOLOv8_DOLG_Milvus_ANN_{th:.2f}",
+                    model_type="yolov8_hybrid",
+                    model_path=args.yolov8_model,
+                    use_milvus=True,
+                    milvus_collection=ann_collection,
+                    embedding_model=args.dolg_model,
+                    similarity_threshold=th,
+                    dataset_yaml=args.dataset,
+                    imgsz=args.imgsz,
+                    batch_size=args.batch,
+                    device=args.device,
+                    iou_threshold=args.iou_threshold,
+                    milvus_db_path=args.ann_milvus_db_path,
+                    milvus_embedding_dim=args.ann_embedding_dim,
+                    milvus_index_type=args.ann_index_type.upper(),
+                    milvus_metric_type=args.ann_metric.upper()
+                ))
     
     # Run experiments
     runner = ExperimentRunner(

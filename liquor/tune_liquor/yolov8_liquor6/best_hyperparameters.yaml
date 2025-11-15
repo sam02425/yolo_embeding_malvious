@@ -1,0 +1,30 @@
+# 23/40 iterations complete ✅ (146400.19s)
+# Results saved to /home/currycareation/Desktop/360images/360Image/runs/tune_liquor/yolov8_liquor6
+# Best fitness=0.97056 observed at iteration 16
+# Best fitness metrics are None
+# Best fitness model is None
+lr0: 0.01367
+lrf: 0.00718
+momentum: 0.92376
+weight_decay: 0.00072
+warmup_epochs: 3.25361
+warmup_momentum: 0.76668
+box: 16.08325
+cls: 0.66228
+dfl: 1.32421
+hsv_h: 0.00878
+hsv_s: 0.9
+hsv_v: 0.39828
+degrees: 0.0
+translate: 0.08966
+scale: 0.46489
+shear: 0.0
+perspective: 0.0
+flipud: 0.0
+fliplr: 0.52488
+bgr: 0.0
+mosaic: 0.78238
+mixup: 0.0
+cutmix: 0.0
+copy_paste: 0.0
+close_mosaic: 7.0

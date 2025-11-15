@@ -1,0 +1,132 @@
+# Enhanced Experiment Configuration with Retail-Trained DOLG and Confidence Ensemble
+# Run with: python yolo_vs_embeding_malvious/run_experiments.py --config yolo_vs_embeding_malvious/experiment_config_enhanced.yaml
+
+# General settings
+device: "cuda:0"
+batch_size: 16
+imgsz: 640
+
+# Dataset configuration
+dataset:
+  path: "data/grocery_augmented/grocery_augmented.yaml"  # Main dataset
+  name: "grocery_augmented"
+
+# Milvus configuration
+milvus:
+  collection_name: "retail_items"
+  embedding_dim: 128
+  index_type: "FLAT"
+  metric_type: "COSINE"
+  db_path: "experiment_results/milvus_retail.db"
+  max_templates_per_class: 10
+
+# Advanced settings
+advanced:
+  iou_threshold: 0.25  # For bbox matching in evaluation (adjusted for dataset quality)
+  enable_mlflow: true
+  mlflow_experiment_name: "retail_detection_enhanced"
+
+# Experiments to run
+experiments:
+  # === BASELINE EXPERIMENTS ===
+  
+  - name: "YOLOv8_Baseline"
+    type: "yolov8"
+    model_path: "yolov8m.pt"
+    use_milvus: false
+    similarity_threshold: 0.5
+    
+  - name: "YOLOv11_Baseline"
+    type: "yolov11"
+    model_path: "yolov11m.pt"
+    use_milvus: false
+    similarity_threshold: 0.5
+  
+  # === IMAGENET DOLG EXPERIMENTS (Previous Approach) ===
+  
+  - name: "Milvus_Hybrid_ImageNet_0.15"
+    type: "yolov8_hybrid"
+    model_path: "yolov8m.pt"
+    use_milvus: true
+    similarity_threshold: 0.15
+    use_retail_embeddings: false
+    use_confidence_ensemble: false
+    
+  # === RETAIL-TRAINED DOLG EXPERIMENTS (New Approach) ===
+  
+  - name: "Milvus_Hybrid_Retail_0.15"
+    type: "yolov8_hybrid"
+    model_path: "yolov8m.pt"
+    use_milvus: true
+    similarity_threshold: 0.15
+    use_retail_embeddings: true
+    retail_model_path: "dolg_retail_model/dolg_retail_best.pth"
+    embedding_extractor_type: "retail"
+    use_confidence_ensemble: false
+  
+  - name: "Milvus_Hybrid_Retail_0.20"
+    type: "yolov8_hybrid"
+    model_path: "yolov8m.pt"
+    use_milvus: true
+    similarity_threshold: 0.20
+    use_retail_embeddings: true
+    retail_model_path: "dolg_retail_model/dolg_retail_best.pth"
+    embedding_extractor_type: "retail"
+    use_confidence_ensemble: false
+  
+  - name: "Milvus_Hybrid_Retail_0.25"
+    type: "yolov8_hybrid"
+    model_path: "yolov8m.pt"
+    use_milvus: true
+    similarity_threshold: 0.25
+    use_retail_embeddings: true
+    retail_model_path: "dolg_retail_model/dolg_retail_best.pth"
+    embedding_extractor_type: "retail"
+    use_confidence_ensemble: false
+  
+  # === CONFIDENCE-BASED ENSEMBLE EXPERIMENTS ===
+  
+  - name: "Milvus_Ensemble_Retail_Conf0.5"
+    type: "yolov8_hybrid"
+    model_path: "yolov8m.pt"
+    use_milvus: true
+    similarity_threshold: 0.20
+    use_retail_embeddings: true
+    retail_model_path: "dolg_retail_model/dolg_retail_best.pth"
+    embedding_extractor_type: "retail"
+    use_confidence_ensemble: true
+    confidence_threshold: 0.5  # Use Milvus when YOLO confidence < 0.5
+  
+  - name: "Milvus_Ensemble_Retail_Conf0.7"
+    type: "yolov8_hybrid"
+    model_path: "yolov8m.pt"
+    use_milvus: true
+    similarity_threshold: 0.20
+    use_retail_embeddings: true
+    retail_model_path: "dolg_retail_model/dolg_retail_best.pth"
+    embedding_extractor_type: "retail"
+    use_confidence_ensemble: true
+    confidence_threshold: 0.7  # Use Milvus when YOLO confidence < 0.7
+  
+  - name: "Milvus_Ensemble_Retail_Conf0.8"
+    type: "yolov8_hybrid"
+    model_path: "yolov8m.pt"
+    use_milvus: true
+    similarity_threshold: 0.20
+    use_retail_embeddings: true
+    retail_model_path: "dolg_retail_model/dolg_retail_best.pth"
+    embedding_extractor_type: "retail"
+    use_confidence_ensemble: true
+    confidence_threshold: 0.8  # Use Milvus when YOLO confidence < 0.8
+  
+  # === ENSEMBLE EMBEDDING EXPERIMENTS (Combine ImageNet + Retail) ===
+  
+  - name: "Milvus_EnsembleEmbedding_Retail"
+    type: "yolov8_hybrid"
+    model_path: "yolov8m.pt"
+    use_milvus: true
+    similarity_threshold: 0.20
+    use_retail_embeddings: true
+    retail_model_path: "dolg_retail_model/dolg_retail_best.pth"
+    embedding_extractor_type: "ensemble"  # Combines retail + ImageNet embeddings
+    use_confidence_ensemble: false

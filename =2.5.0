@@ -1,0 +1,19 @@
+Defaulting to user installation because normal site-packages is not writeable
+Collecting pymilvus
+  Using cached pymilvus-2.6.3-py3-none-any.whl.metadata (6.6 kB)
+Collecting setuptools>69 (from pymilvus)
+  Using cached setuptools-80.9.0-py3-none-any.whl.metadata (6.6 kB)
+Requirement already satisfied: grpcio!=1.68.0,!=1.68.1,!=1.69.0,!=1.70.0,!=1.70.1,!=1.71.0,!=1.72.1,!=1.73.0,>=1.66.2 in /home/currycareation/.local/lib/python3.12/site-packages (from pymilvus) (1.76.0)
+Requirement already satisfied: orjson>=3.10.15 in /home/currycareation/.local/lib/python3.12/site-packages (from pymilvus) (3.11.4)
+Requirement already satisfied: protobuf>=5.27.2 in /home/currycareation/.local/lib/python3.12/site-packages (from pymilvus) (6.33.0)
+Requirement already satisfied: python-dotenv<2.0.0,>=1.0.1 in /home/currycareation/.local/lib/python3.12/site-packages (from pymilvus) (1.2.1)
+Requirement already satisfied: pandas>=1.2.4 in /home/currycareation/.local/lib/python3.12/site-packages (from pymilvus) (2.3.3)
+Requirement already satisfied: typing-extensions~=4.12 in /home/currycareation/.local/lib/python3.12/site-packages (from grpcio!=1.68.0,!=1.68.1,!=1.69.0,!=1.70.0,!=1.70.1,!=1.71.0,!=1.72.1,!=1.73.0,>=1.66.2->pymilvus) (4.15.0)
+Requirement already satisfied: numpy>=1.26.0 in /home/currycareation/.local/lib/python3.12/site-packages (from pandas>=1.2.4->pymilvus) (2.2.6)
+Requirement already satisfied: python-dateutil>=2.8.2 in /usr/lib/python3/dist-packages (from pandas>=1.2.4->pymilvus) (2.8.2)
+Requirement already satisfied: pytz>=2020.1 in /usr/lib/python3/dist-packages (from pandas>=1.2.4->pymilvus) (2024.1)
+Requirement already satisfied: tzdata>=2022.7 in /home/currycareation/.local/lib/python3.12/site-packages (from pandas>=1.2.4->pymilvus) (2025.2)
+Using cached pymilvus-2.6.3-py3-none-any.whl (273 kB)
+Using cached setuptools-80.9.0-py3-none-any.whl (1.2 MB)
+Installing collected packages: setuptools, pymilvus
+Successfully installed pymilvus-2.6.3 setuptools-80.9.0

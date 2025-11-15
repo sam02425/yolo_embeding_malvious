@@ -34,6 +34,26 @@ Models evaluated:
 
 DOLG embeddings are extracted via an EfficientNet-B0 backbone (see `populate_milvus_embeddings.py`).
 
+## Grocery Baseline Training + Augmentation
+
+The grocery domain previously relied on pretrained weights only. Use `scripts/train_grocery_baselines.py` to build an augmented dataset that mixes in store-context frames from `data/empty-shelf-detection.v1i.yolov11` and then train YOLOv8/YOLOv11 baselines:
+
+```bash
+python scripts/train_grocery_baselines.py \
+  --base-dataset data/grocery.v3i.yolov11 \
+  --background-dataset data/empty-shelf-detection.v1i.yolov11 \
+  --output-dataset data/grocery_augmented \
+  --train-yolov8 --train-yolov11 \
+  --epochs 100 --imgsz 640 --batch 32 --device cuda:0
+```
+
+- The script symlinks the base grocery dataset, injects background-only store images (with blank labels) into the train/valid splits, and writes `data/grocery_augmented/grocery_augmented.yaml`.
+- Checkpoints land in `grocery/runs/yolov8_grocery_baseline` and `grocery/runs/yolo11_grocery_baseline` with `best.pt` ready for `run_experiments.py`.
+- Add `--dataset-only` to just stage the augmented dataset or `--background-ratio`/`--background-limit` to tune how many store frames are appended.
+- Validate liquor assets before running the Milvus experiments via `python scripts/train_grocery_baselines.py --check-liquor-data`, which ensures `data/Liquor-data.v4i.yolov11` is populated.
+- Training enforces CUDA-only execution (RTX 5080-ready), half precision, early stopping with patience ~5-6 epochs (override via `--patience`), auto-scales the batch size downward if CUDA runs out of memory, and always logs to MLflow with descriptive experiment/run names (tune via `--mlflow-experiment` / `--mlflow-uri`).
+- Curated Milvus templates: `yolo_vs_embeding_malvious/populate_milvus_embeddings.py` now supports `--min-box-area`, `--template-augmentations`, and background skipping, so you can rebuild embeddings that ignore empty shelf frames while generating extra lighting/viewpoint variants per SKU. For full embedding fine-tuning, use `scripts/fine_tune_dolg.py` to train the DOLG encoder on grocery crops and pass the resulting checkpoint to the populate script.
+
 ## Pipeline Overview
 
 1. **Baseline Training / Evaluation** – `yolo_vs_embeding_malvious/run_experiments.py` orchestrates YOLOv8 and YOLOv11 evaluations using the dataset YAML paths above.
